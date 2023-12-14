@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace PizzaMauiApp1;
+namespace PizzaMauiApp;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

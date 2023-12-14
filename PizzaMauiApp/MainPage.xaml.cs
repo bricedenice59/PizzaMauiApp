@@ -1,4 +1,4 @@
-﻿namespace PizzaMauiApp1;
+﻿namespace PizzaMauiApp;
 
 public partial class MainPage : ContentPage
 {

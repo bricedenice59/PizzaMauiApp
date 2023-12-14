@@ -4,7 +4,7 @@
         <TargetFrameworks>net8.0-android;net8.0-ios;</TargetFrameworks>
 
         <OutputType>Exe</OutputType>
-        <RootNamespace>PizzaMauiApp1</RootNamespace>
+        <RootNamespace>PizzaMauiApp</RootNamespace>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -22,6 +22,7 @@
 
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <AssemblyName>PizzaMauiApp</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
@@ -52,9 +53,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
+      <Folder Include="Pages\" />
       <Folder Include="ViewModels\" />
-      <Folder Include="Views\" />
     </ItemGroup>
 
 </Project>

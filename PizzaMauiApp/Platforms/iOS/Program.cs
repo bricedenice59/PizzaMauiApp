@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace PizzaMauiApp1;
+namespace PizzaMauiApp;
 
 public class Program
 {
