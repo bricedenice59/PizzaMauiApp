@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaMauiApp1", "PizzaMauiApp1\PizzaMauiApp1.csproj", "{7D6ED233-55D9-4AFA-AD33-86AF570D6C59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaMauiApp1", "PizzaMauiApp\PizzaMauiApp.csproj", "{7D6ED233-55D9-4AFA-AD33-86AF570D6C59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

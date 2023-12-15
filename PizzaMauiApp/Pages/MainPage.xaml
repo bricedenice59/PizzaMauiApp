@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaMauiApp.Pages.MainPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="DarkGoldenrod">
+    
+       <Grid 
+       RowDefinitions="Auto, *, Auto" 
+       ColumnDefinitions="Auto, *, Auto"
+       Padding="15,25">
+   
+    <Label
+           Grid.Row="0"
+           Grid.Column="1"
+           FontAttributes="Bold" 
+           FontSize="40"
+           VerticalTextAlignment="Center" 
+           HorizontalOptions="Center"
+           Text="Pizza World"/>
+    
+    <Image 
+           Grid.Row="1" 
+           Grid.Column="1"
+           HeightRequest="350"
+           WidthRequest="350"
+           Source="dotnet_bot.png"/>
+    
+    <VerticalStackLayout 
+           Grid.Row="2" 
+           Grid.ColumnSpan="3" 
+           Spacing="20">
+        <Label FontAttributes="Bold" 
+               FontSize="30"
+               VerticalTextAlignment="Center" 
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Text="The taste of the best pizza!"/>
+        <Label FontAttributes="Bold" 
+               FontSize="18" 
+               LineHeight="1.2"
+               VerticalTextAlignment="Center" 
+               HorizontalOptions="Center"
+               Text="Feel the taste of mouth watering pizza of its origin country"/>
+        <Border StrokeThickness="0"
+                StrokeShape="RoundRectangle 25"
+                BackgroundColor="Goldenrod"
+                HeightRequest="50">
+               <Border.GestureRecognizers>
+                      <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
+               </Border.GestureRecognizers>
+               <HorizontalStackLayout
+                      HorizontalOptions="Center">
+                      <Label FontAttributes="Bold" 
+                             FontSize="25"
+                             HorizontalTextAlignment="Center"
+                             VerticalOptions="Center"
+                             Text="Get started"/>
+                      <Image Margin="10,0,0,0"
+                             VerticalOptions="Center"
+                             Source="arrow_right.png"/>
+               </HorizontalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</Grid>
+
+</ContentPage>

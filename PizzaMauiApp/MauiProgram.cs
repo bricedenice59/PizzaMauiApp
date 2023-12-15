@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using PizzaMauiApp.Pages;
+using PizzaMauiApp.ViewModels;
 
 namespace PizzaMauiApp;
 public static class MauiProgram
@@ -12,6 +14,14 @@ public static class MauiProgram
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         }).UseMauiCommunityToolkit();
+        
+        builder.Services.AddTransient<MainPage>();
+        builder.Services.AddTransient<HomePage>();
+        
+        builder.Services.AddTransient<MainPageViewModel>();
+        builder.Services.AddTransient<HomePageViewModel>();
+        
+        builder.Services.AddSingleton<IDIService, DIService>();
         
 #if DEBUG
         builder.Logging.AddDebug();
