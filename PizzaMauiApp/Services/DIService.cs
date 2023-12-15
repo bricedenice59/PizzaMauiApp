@@ -1,6 +1,6 @@
 using PizzaMauiApp.ViewModels;
 
-namespace PizzaMauiApp;
+namespace PizzaMauiApp.Services;
 
 public interface IDIService
 {

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using PizzaMauiApp.Pages;
+using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels;
 
 namespace PizzaMauiApp;
@@ -22,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddTransient<HomePageViewModel>();
         
         builder.Services.AddSingleton<IDIService, DIService>();
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
         
 #if DEBUG
         builder.Logging.AddDebug();
