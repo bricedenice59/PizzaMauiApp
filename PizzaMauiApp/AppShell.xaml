@@ -6,6 +6,7 @@
     xmlns:pizzaMauiApp="clr-namespace:PizzaMauiApp"
     xmlns:pages="clr-namespace:PizzaMauiApp.Pages"
     Shell.FlyoutBehavior="Disabled"
+    Shell.BackgroundColor="DarkGoldenrod"
     Title="PizzaMauiApp">
 
     <ShellContent

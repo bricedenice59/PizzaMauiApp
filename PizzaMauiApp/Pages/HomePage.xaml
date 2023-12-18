@@ -1,11 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+ 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PizzaMauiApp.Pages.HomePage"
-             Shell.NavBarIsVisible="False"
-             BackgroundColor="DarkGoldenrod">
+             Title="Our selection"
+             Shell.NavBarIsVisible="True"
+             Padding="20">
     <ContentPage.Content>
-        
+        <ScrollView>
+            <VerticalStackLayout>
+                <Border Padding="15"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 10"
+                        BackgroundColor="Goldenrod"
+                        VerticalOptions="Start">
+                    <Grid ColumnDefinitions="*, 150">
+                        <VerticalStackLayout Grid.Column="0" Spacing="10">
+                            <Label
+                                FontSize="30"
+                                VerticalTextAlignment="Center" 
+                                HorizontalOptions="Start"
+                                Text="Best offer"/>
+                            <Label
+                                FontSize="15"
+                                VerticalTextAlignment="Center" 
+                                HorizontalOptions="Start"
+                                Text="Grab this amazing off before it expires"/>
+                            <Border StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 25"
+                                    BackgroundColor="PaleGoldenrod"
+                                    HeightRequest="50"
+                                    WidthRequest="150"
+                                    HorizontalOptions="Start">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
+                                </Border.GestureRecognizers>
+                                <Label FontAttributes="Bold" 
+                                       FontSize="15"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       Text="Get it now"/>
+                                </Border>
+                        </VerticalStackLayout>
+                        <Image
+                            Grid.Column="1" 
+                            Margin="20,0,0,0"
+                            HeightRequest="150"
+                            WidthRequest="200"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Source="dotnet_bot.png">
+                        </Image>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

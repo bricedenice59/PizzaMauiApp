@@ -45,7 +45,8 @@
         <Border StrokeThickness="0"
                 StrokeShape="RoundRectangle 25"
                 BackgroundColor="Goldenrod"
-                HeightRequest="50">
+                HeightRequest="50"
+                Margin="0,10,0,0">
                <Border.GestureRecognizers>
                       <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
                </Border.GestureRecognizers>
