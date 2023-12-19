@@ -1,8 +1,6 @@
-using PizzaMauiApp.Services;
-
 namespace PizzaMauiApp.ViewModels;
 
-public class ViewModelBase
+public class ViewModelBase : ObservableObject
 {
     public virtual Task OnNavigatingTo(object? parameter)
         => Task.CompletedTask;

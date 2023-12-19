@@ -2,10 +2,14 @@
  
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
+             xmlns:models="clr-namespace:PizzaMauiApp.Models"
              x:Class="PizzaMauiApp.Pages.HomePage"
+             x:DataType="vms:HomePageViewModel"
              Title="Our selection"
              Shell.NavBarIsVisible="True"
-             Padding="20">
+             Padding="20"
+             >
     <ContentPage.Content>
         <ScrollView>
             <VerticalStackLayout>
@@ -33,7 +37,7 @@
                                     WidthRequest="150"
                                     HorizontalOptions="Start">
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
+                                    <TapGestureRecognizer Command="{Binding GetBestOfferCommand}"/>
                                 </Border.GestureRecognizers>
                                 <Label FontAttributes="Bold" 
                                        FontSize="15"
@@ -53,6 +57,78 @@
                         </Image>
                     </Grid>
                 </Border>
+                <Border Padding="15"
+                        Margin="0,10,0,0"
+                        StrokeThickness="2"
+                        Stroke="Goldenrod"
+                        StrokeShape="RoundRectangle 10"
+                        BackgroundColor="WhiteSmoke"
+                        VerticalOptions="Start"
+                        HeightRequest="50">
+                    <Label Text="Search for a pizza..."
+                           FontSize="15">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LookupCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+                <Grid ColumnDefinitions="*, *" 
+                      Margin="0,25,0,0">
+                    <Label Grid.Column="0"
+                           Text="Popular items"
+                           VerticalOptions="End"
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+                    <Label Grid.Column="1"
+                            Text="View all"
+                            HorizontalOptions="End"
+                            VerticalOptions="End"
+                            TextDecorations="Underline">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ViewAllCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                
+                <FlexLayout 
+                    BindableLayout.ItemsSource="{Binding PopularPizzasCollection}"
+                    Wrap="Wrap">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Pizza">
+                           <Border FlexLayout.Basis="50%"
+                               StrokeShape="RoundRectangle 10"
+                               StrokeThickness="0"
+                               BackgroundColor="PaleGoldenrod"
+                               Margin="2">
+                               <Grid RowDefinitions="150, Auto, Auto, Auto" RowSpacing="5">
+                                   <Image Grid.Row="0"
+                                          WidthRequest="130"
+                                          Source="{Binding Image}">
+                                   </Image>
+                                   <Label Grid.Row="1"
+                                          Text="{Binding Name}"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"
+                                          FontSize="20"
+                                          FontAttributes="Bold"/>
+                                   <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                                       <Label Grid.Column="0"
+                                              Text="{Binding Price, StringFormat='{0}€'}"
+                                              FontSize="20"
+                                              FontAttributes="Bold"/>
+                                       <HorizontalStackLayout Grid.Column="1">
+                                           <Label
+                                                  Text="Rating here..."
+                                                  FontSize="10"
+                                                  HorizontalOptions="End"
+                                                  VerticalOptions="Center"/>
+                                       </HorizontalStackLayout>
+                                   </Grid>
+                               </Grid>
+                           </Border> 
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>

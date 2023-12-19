@@ -24,7 +24,7 @@
            Grid.Column="1"
            HeightRequest="350"
            WidthRequest="350"
-           Source="dotnet_bot.png"/>
+           Source="pizzamenu.png"/>
     
     <VerticalStackLayout 
            Grid.Row="2" 

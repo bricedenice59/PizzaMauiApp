@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-
 namespace PizzaMauiApp.Models;
 
 public partial class Pizza : ObservableObject
