@@ -80,22 +80,35 @@ public class PizzaService : IPizzaService
         }
     };
 
-    public IEnumerable<Pizza> GetAll() => _pizzas;
+    public Task<IEnumerable<Pizza>> GetAll()
+    {
+        return Task.FromResult(_pizzas);
+    }
 
-    public IEnumerable<Pizza> Lookup(string key) =>
-        string.IsNullOrEmpty(key)
-            ? _pizzas
-            :_pizzas.Where(x=>x.Name.Contains(key,StringComparison.OrdinalIgnoreCase));
-    
-    public IEnumerable<Pizza> GetPopular(int count = 6) =>
-        _pizzas.OrderBy(x => Guid.NewGuid())
-            .Take(count);
+    public  Task<IEnumerable<Pizza>> Lookup(string key)
+    {
+        return Task.Run(() =>
+        {
+            return string.IsNullOrEmpty(key)
+                ? _pizzas
+                : _pizzas.Where(x => x.Name.Contains(key, StringComparison.OrdinalIgnoreCase));
+        });
+    }
+      
 
+    public Task<IEnumerable<Pizza>> GetPopular(int count = 6)
+    {
+        return Task.Run( () =>
+        {
+            return _pizzas.OrderBy(x => Guid.NewGuid())
+                .Take(count);
+        });
+    }
 }
 
 public interface IPizzaService
 {
-    IEnumerable<Pizza> GetAll();
-    IEnumerable<Pizza> Lookup(string key);
-    IEnumerable<Pizza> GetPopular(int count = 6);
+    Task<IEnumerable<Pizza>> GetAll();
+    Task<IEnumerable<Pizza>> Lookup(string key);
+    Task<IEnumerable<Pizza>> GetPopular(int count = 6);
 }

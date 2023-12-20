@@ -4,14 +4,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
              xmlns:models="clr-namespace:PizzaMauiApp.Models"
+             xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PizzaMauiApp.Pages.HomePage"
              x:DataType="vms:HomePageViewModel"
              Title="Our selection"
              Shell.NavBarIsVisible="True"
-             Padding="20"
-             >
-    <ContentPage.Content>
-        <ScrollView>
+             Padding="20">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Loaded"
+            Command="{Binding OnLoadCommand}" />
+    </ContentPage.Behaviors>
+    
+    <ScrollView>
             <VerticalStackLayout>
                 <Border Padding="15"
                         StrokeThickness="0"
@@ -91,7 +98,7 @@
                 </Grid>
                 
                 <FlexLayout 
-                    BindableLayout.ItemsSource="{Binding PopularPizzasCollection}"
+                    BindableLayout.ItemsSource="{Binding PopularPizzas}"
                     Wrap="Wrap">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="models:Pizza">
@@ -100,7 +107,9 @@
                                StrokeThickness="0"
                                BackgroundColor="PaleGoldenrod"
                                Margin="2">
-                               <Grid RowDefinitions="150, Auto, Auto, Auto" RowSpacing="5">
+                               <Grid RowDefinitions="150, Auto, Auto, Auto" 
+                                     RowSpacing="5" 
+                                     Margin="15,0,10,0">
                                    <Image Grid.Row="0"
                                           WidthRequest="130"
                                           Source="{Binding Image}">
@@ -111,19 +120,40 @@
                                           HorizontalOptions="Center"
                                           FontSize="20"
                                           FontAttributes="Bold"/>
-                                   <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                                   <Grid Grid.Row="2" ColumnDefinitions="*,*" 
+                                         >
                                        <Label Grid.Column="0"
                                               Text="{Binding Price, StringFormat='{0}€'}"
-                                              FontSize="20"
-                                              FontAttributes="Bold"/>
-                                       <HorizontalStackLayout Grid.Column="1">
+                                              FontSize="15"
+                                              FontAttributes="Bold"
+                                              />
+                                       <HorizontalStackLayout 
+                                           Grid.Column="1"
+                                           HorizontalOptions="End"
+                                           Spacing="2">
                                            <Label
-                                                  Text="Rating here..."
-                                                  FontSize="10"
-                                                  HorizontalOptions="End"
-                                                  VerticalOptions="Center"/>
+                                               Text="4"
+                                               FontSize="15"
+                                               VerticalOptions="Center"
+                                               />
+                                           <controls:StarButton
+                                               BorderBackgroundColor="Black"
+                                               BorderStrokeThickness="0"
+                                               WidthRequest="17" 
+                                               HeightRequest="17"
+                                               VerticalOptions="Center"/>
                                        </HorizontalStackLayout>
                                    </Grid>
+                                   <Button Grid.Row="3"
+                                           CornerRadius="20"
+                                           Text="View more..."
+                                           BackgroundColor="Gold"
+                                           TextColor="Black"
+                                           VerticalOptions="End"
+                                           HorizontalOptions="Center"
+                                           Padding="25,0">
+                                            
+                                   </Button>
                                </Grid>
                            </Border> 
                         </DataTemplate>
@@ -131,5 +161,4 @@
                 </FlexLayout>
             </VerticalStackLayout>
         </ScrollView>
-    </ContentPage.Content>
 </ContentPage>

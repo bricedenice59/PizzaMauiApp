@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PizzaMauiApp.Controls.StarButton"
+             x:Name="this" BackgroundColor="Transparent">
+        <Border BindingContext="{x:Reference this}"
+                BackgroundColor="{Binding BorderBackgroundColor}"
+                Stroke="{Binding BorderStroke}"
+                StrokeThickness="{Binding BorderStrokeThickness}">
+            <Border.StrokeShape>
+                <Path Aspect="Uniform"
+                      Data="M 127,37 L 104,105 L 34,105 L 91,150 L 69,218 L 127,176 L 187,218 L 164,150 L 223,105 L 151,105 L 127,37">
+                </Path>
+            </Border.StrokeShape>
+            <!-- <Border.GestureRecognizers> -->
+            <!--     <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped"/> -->
+            <!-- </Border.GestureRecognizers> -->
+        </Border>
+
+</ContentView>
