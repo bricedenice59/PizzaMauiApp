@@ -38,13 +38,13 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
     }
     
     [RelayCommand]
-    public async Task OnLookup()
+    private async Task OnLookup()
     {
         await navigationService.NavigateToPage<AllItemsPage>(true);
     }
     
     [RelayCommand]
-    public async Task OnViewAll()
+    private async Task OnViewAll()
     {
         await navigationService.NavigateToPage<AllItemsPage>();
     }

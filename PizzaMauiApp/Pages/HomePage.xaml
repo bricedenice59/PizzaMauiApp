@@ -159,6 +159,10 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Color="DarkGoldenrod"/>
             </VerticalStackLayout>
         </ScrollView>
 </ContentPage>

@@ -5,7 +5,7 @@ namespace PizzaMauiApp.ViewModels;
 
 public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBase
 {
-    public ObservableCollection<Pizza> AllItems { get; set; } 
+    public ObservableCollection<Pizza> AllItems { get; set; } = new();
 
     [ObservableProperty] 
     private bool _searchBarVisible;
@@ -15,9 +15,6 @@ public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBa
     
     [ObservableProperty] 
     private bool _isLoading;
-    
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SearchItemsCommand))] 
-    private string? _searchKeyword;
 
     protected override async Task ExecuteOnLoad()
     {
@@ -40,16 +37,19 @@ public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBa
     private async Task LoadAllItems()
     {
         var allItems = await pizzaService.GetAll();
-        AllItems = allItems.ToObservableCollection();
+        foreach (var item in allItems)
+        {
+            AllItems.Add(item);
+        }
     }
     
     [RelayCommand]
-    private async Task SearchItems()
+    private async Task SearchItems(string keyword)
     {
         IsSearching = true;
         
         AllItems.Clear();
-        var items = await pizzaService.Lookup(SearchKeyword);
+        var items = await pizzaService.Lookup(keyword);
         foreach (var item in items)
         {
             AllItems.Add(item);
