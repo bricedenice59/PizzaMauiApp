@@ -8,10 +8,7 @@ public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBa
     public ObservableCollection<Pizza> AllItems { get; set; } = new();
 
     [ObservableProperty] 
-    private bool _searchBarVisible;
-    
-    [ObservableProperty] 
-    private bool _isSearching;
+    private bool _fromSearch;
     
     [ObservableProperty] 
     private bool _isLoading;
@@ -29,7 +26,7 @@ public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBa
     public override Task OnNavigatingTo(object? parameter)
     {
         if (parameter is bool)
-            SearchBarVisible = bool.Parse(parameter.ToString()!);
+            FromSearch = bool.Parse(parameter.ToString()!);
         return base.OnNavigatingTo(parameter);
     }
     
@@ -46,15 +43,11 @@ public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBa
     [RelayCommand]
     private async Task SearchItems(string keyword)
     {
-        IsSearching = true;
-        
         AllItems.Clear();
         var items = await pizzaService.Lookup(keyword);
         foreach (var item in items)
         {
             AllItems.Add(item);
         }
-        
-        IsSearching = false;
     }
 }
