@@ -23,7 +23,7 @@ public partial class AllItemsPage : ContentPage
         if (_vm.FromSearch)
         {
             searchBar.Focus();
-            _vm.AllItems.CollectionChanged -= OnCollectionChanged;
         }
+        _vm.AllItems.CollectionChanged -= OnCollectionChanged;
     }
 }
