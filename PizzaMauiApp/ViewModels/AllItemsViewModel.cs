@@ -1,28 +1,20 @@
 using PizzaMauiApp.Models;
+using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBase
+public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationService navigationService) : ViewModelBase
 {
-    public ObservableCollection<Pizza> AllItems { get; set; } = new();
+    public ObservableCollection<Pizza> AllItems { get; set; } = 
+        pizzaService.GetAll().GetAwaiter().GetResult().ToObservableCollection();
 
     [ObservableProperty] 
     private bool _fromSearch;
     
     [ObservableProperty] 
     private bool _isLoading;
-
-    protected override async Task ExecuteOnLoad()
-    {
-        IsLoading = true;
-        
-        await Task.Delay(2000); //just simulate a long operation for time being
-        await LoadAllItems();
-        
-        IsLoading = false;
-    }
-
+    
     public override Task OnNavigatingTo(object? parameter)
     {
         if (parameter is bool)
@@ -31,23 +23,24 @@ public partial class AllItemsViewModel(IPizzaService pizzaService) : ViewModelBa
     }
     
     [RelayCommand]
-    private async Task LoadAllItems()
-    {
-        var allItems = await pizzaService.GetAll();
-        foreach (var item in allItems)
-        {
-            AllItems.Add(item);
-        }
-    }
-    
-    [RelayCommand]
     private async Task SearchItems(string keyword)
     {
         AllItems.Clear();
+
+        IsLoading = true;
+        
         var items = await pizzaService.Lookup(keyword);
         foreach (var item in items)
         {
             AllItems.Add(item);
         }
+
+        IsLoading = false;
+    }
+    
+    [RelayCommand]
+    private async Task OnViewMore(Pizza pizzaItem)
+    {
+        await navigationService.NavigateToPage<DetailPage>(pizzaItem);
     }
 }

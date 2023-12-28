@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:models="clr-namespace:PizzaMauiApp.Models"
+             xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
+             x:DataType="vms:DetailPageViewModel"
+             x:Class="PizzaMauiApp.Pages.DetailPage"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="White" 
+                                   StatusBarStyle="DarkContent"/>
+    </ContentPage.Behaviors>
+    <ContentPage.Content>
+        <Grid>
+            <ScrollView Padding="15">
+                <VerticalStackLayout Padding="15">
+                    <Image 
+                           Source="{Binding PizzaItem.Image, FallbackValue=null}"
+                           HeightRequest="200"
+                           WidthRequest="200"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                    <Label Text="{Binding PizzaItem.Name, FallbackValue=null}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                    <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
+                        <Label Grid.Column="0"
+                               Text="{Binding PizzaItem.Price, StringFormat='{0}€', FallbackValue=null}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <HorizontalStackLayout 
+                            Grid.Column="1"
+                            HorizontalOptions="End"
+                            VerticalOptions="End"
+                            Spacing="2">
+                            <Label
+                                Text="4"
+                                FontSize="15"
+                            />
+                            <controls:StarButton
+                                BorderBackgroundColor="Black"
+                                BorderStrokeThickness="0"
+                                WidthRequest="17" 
+                                HeightRequest="17"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+                    <Label Text="Ingredients:" 
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           Margin="0,20,0,5"/>
+                    <Label Text="{Binding PizzaItem.Ingredients, FallbackValue=null}"
+                        FontSize="15"/>
+                    <Label Text="Description:" 
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           Margin="0,20,0,5"/>
+                    <Label Text="{Binding PizzaItem.Description, FallbackValue=null}"
+                           LineHeight="1.5"
+                           FontSize="15"/>
+                </VerticalStackLayout>
+            </ScrollView>
+            <Border StrokeThickness="0"
+                    BackgroundColor="DarkGoldenrod"
+                    StrokeShape="{OnPlatform Android='RoundRectangle 30,30,0,0', Default='Rectangle 0'}"
+                    VerticalOptions="End"
+                    HeightRequest="150"
+                    Padding="15">
+                <Border.Shadow>
+                    <Shadow Brush="Gold"
+                            Radius="100"></Shadow>
+                </Border.Shadow>
+            </Border>
+            <ImageButton VerticalOptions="Start"
+                         HorizontalOptions="Start"
+                         Source="back"
+                         Margin="20"
+                         HeightRequest="20"
+                         WidthRequest="20"
+                         Command="{Binding GoBackCommand}">
+                <ImageButton.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="DarkGoldenrod"/>
+                </ImageButton.Behaviors>
+            </ImageButton>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

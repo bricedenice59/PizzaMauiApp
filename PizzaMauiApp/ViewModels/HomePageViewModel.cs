@@ -8,28 +8,10 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
 {
     [ObservableProperty] 
     private bool _isLoading;
-    public ObservableCollection<Pizza> PopularPizzas { get; set; } = new();
-
-    protected override async Task ExecuteOnLoad()
-    {
-        IsLoading = true;
-        
-        await Task.Delay(2000); //just simulate a long operation for time being
-        await LoadAllPopularItems();
-        
-        IsLoading = false;
-    }
+    public ObservableCollection<Pizza> PopularPizzas { get; set; } =
+        pizzaService.GetPopular().GetAwaiter().GetResult().ToObservableCollection();
 
     #region Commands
-    
-    private async Task LoadAllPopularItems()
-    {
-        var popularItems = await pizzaService.GetPopular();
-        foreach (var popularItem in popularItems)
-        {
-            PopularPizzas.Add(popularItem);
-        }
-    }
     
     [RelayCommand]
     public async Task OnGetBestOffer()
@@ -47,6 +29,12 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
     private async Task OnViewAll()
     {
         await navigationService.NavigateToPage<AllItemsPage>();
+    }
+    
+    [RelayCommand]
+    private async Task OnViewMore(Pizza pizza)
+    {
+        await navigationService.NavigateToPage<DetailPage>(pizza);
     }
     
     #endregion

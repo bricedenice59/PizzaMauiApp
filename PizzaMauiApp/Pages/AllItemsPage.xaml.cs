@@ -1,4 +1,3 @@
-using System.Collections.Specialized;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels;
 
@@ -11,19 +10,16 @@ public partial class AllItemsPage : ContentPage
     {
         _vm = diService.ResolveViewModel<AllItemsViewModel>();
         BindingContext = _vm;
-        _vm.AllItems.CollectionChanged += OnCollectionChanged; 
+        Appearing += OnAppearing;
         InitializeComponent();
     }
 
-    void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    async void OnAppearing(object? sender, EventArgs e)
     {
-        //only set searchbar focus when there is at least one element to be displayed
-        if (e.Action != NotifyCollectionChangedAction.Add) return;
-
         if (_vm.FromSearch)
         {
+            await Task.Delay(100);
             searchBar.Focus();
         }
-        _vm.AllItems.CollectionChanged -= OnCollectionChanged;
     }
 }

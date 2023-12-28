@@ -1,9 +1,14 @@
+using PizzaMauiApp.Services;
+
 namespace PizzaMauiApp.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {
     private RelayCommand _onLoadCommand;
     public virtual Task OnNavigatingTo(object? parameter)
+        => Task.CompletedTask;
+    
+    public virtual Task OnNavigatingFrom(object? parameter)
         => Task.CompletedTask;
 
     public RelayCommand OnLoadCommand

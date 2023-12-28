@@ -5,18 +5,16 @@
              xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
              xmlns:models="clr-namespace:PizzaMauiApp.Models"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PizzaMauiApp.Pages.HomePage"
              x:DataType="vms:HomePageViewModel"
              Title="Our selection"
              Shell.NavBarIsVisible="True"
+             NavigationPage.HasBackButton="False"
              Padding="20">
-
-    <ContentPage.Behaviors>
-        <toolkit:EventToCommandBehavior
-            EventName="Loaded"
-            Command="{Binding OnLoadCommand}" />
-    </ContentPage.Behaviors>
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
     
     <ScrollView>
             <VerticalStackLayout>
@@ -151,8 +149,10 @@
                                            TextColor="Black"
                                            VerticalOptions="End"
                                            HorizontalOptions="Center"
-                                           Padding="25,0">
-                                            
+                                           Padding="25,0"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vms:HomePageViewModel}},
+                                                    Path=ViewMoreCommand}"
+                                            CommandParameter="{Binding .}">
                                    </Button>
                                </Grid>
                            </Border> 

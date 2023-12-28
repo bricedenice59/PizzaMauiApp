@@ -17,6 +17,7 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPage, MainPageViewModel>();
         builder.Services.AddTransient<HomePage, HomePageViewModel>();
         builder.Services.AddTransient<AllItemsPage, AllItemsViewModel>();
+        builder.Services.AddTransient<DetailPage, DetailPageViewModel>();
         
         builder.Services.AddSingleton<IDIService, DIService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
