@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using PizzaMauiApp.Models;
+using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
@@ -33,7 +34,8 @@ public partial class DetailPageViewModel(INavigationService navigationService) :
     {
         if (PizzaItem != null && PizzaItem.Quantity == 0)
             return;
-        PizzaItem!.Quantity--;
+        if (PizzaItem != null) 
+            PizzaItem.Quantity--;
     }
     
     [RelayCommand]
@@ -45,6 +47,6 @@ public partial class DetailPageViewModel(INavigationService navigationService) :
             return;
         }
 
-        //await navigationService.NavigateToPage<>();
+        await navigationService.NavigateToPage<CartViewPage>();
     }
 }
