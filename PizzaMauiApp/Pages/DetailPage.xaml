@@ -4,8 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:models="clr-namespace:PizzaMauiApp.Models"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              x:DataType="vms:DetailPageViewModel"
              x:Class="PizzaMauiApp.Pages.DetailPage"
@@ -75,6 +73,47 @@
                     <Shadow Brush="Gold"
                             Radius="100"></Shadow>
                 </Border.Shadow>
+                <Grid RowDefinitions="Auto, Auto"
+                        ColumnDefinitions="*, *">
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Text="{Binding PizzaItem.Amount, StringFormat='${0:N2}'}"
+                           FontSize="20"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"/>
+                    <Grid Grid.Row="0"
+                          Grid.Column="1"
+                          ColumnDefinitions="50,40,50"
+                          HorizontalOptions="End"
+                          VerticalOptions="Center">
+                        <ImageButton Grid.Column="0"
+                                     Source="increment"
+                                     Style="{StaticResource ButtonIncrementDecrement}"
+                                     Command="{Binding IncrementQuantityCommand}"/>
+                        <Label Grid.Column="1"
+                               Text="{Binding PizzaItem.Quantity}"
+                               TextColor="White"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontSize="20"/>
+                        <ImageButton Grid.Column="2"
+                                     Source="decrement"
+                                     Style="{StaticResource ButtonIncrementDecrement}"
+                                     Command="{Binding DecrementQuantityCommand}"/>
+                        
+                    </Grid>
+                    <Button Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            BackgroundColor="Goldenrod"
+                            Text="View Cart"
+                            HorizontalOptions="Center"
+                            VerticalOptions="End"
+                            CornerRadius="20"
+                            Padding="80,10"
+                            Margin="0,20,0,0"
+                            Command="{Binding ViewCartCommand}"/>
+                </Grid>
             </Border>
             <ImageButton VerticalOptions="Start"
                          HorizontalOptions="Start"

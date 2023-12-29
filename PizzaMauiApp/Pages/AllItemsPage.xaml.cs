@@ -8,7 +8,7 @@ public partial class AllItemsPage : ContentPage
     private readonly AllItemsViewModel _vm;
     public AllItemsPage(IDIService diService)
     {
-        _vm = diService.ResolveViewModel<AllItemsViewModel>();
+        _vm = diService.ResolveViewModel<AllItemsViewModel>()!;
         BindingContext = _vm;
         Appearing += OnAppearing;
         InitializeComponent();

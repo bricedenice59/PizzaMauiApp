@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using PizzaMauiApp.Models;
 using PizzaMauiApp.Services;
 
@@ -18,5 +20,31 @@ public partial class DetailPageViewModel(INavigationService navigationService) :
     private async Task OnGoBack()
     {
         await navigationService.NavigateBack();
+    }
+
+    [RelayCommand]
+    private void OnIncrementQuantity()
+    {
+        if (PizzaItem != null) PizzaItem.Quantity++;
+    }
+
+    [RelayCommand]
+    private void OnDecrementQuantity()
+    {
+        if (PizzaItem != null && PizzaItem.Quantity == 0)
+            return;
+        PizzaItem!.Quantity--;
+    }
+    
+    [RelayCommand]
+    private async Task OnViewCart()
+    {
+        if (PizzaItem != null && PizzaItem.Quantity == 0)
+        {
+            await Toast.Make("Please select a quantity more than 0", ToastDuration.Short).Show();
+            return;
+        }
+
+        //await navigationService.NavigateToPage<>();
     }
 }
