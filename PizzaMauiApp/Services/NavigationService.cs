@@ -37,6 +37,7 @@ public class NavigationService(IDIService services) : INavigationService
             await vmBase.OnNavigatingTo(parameter);
             
             await Navigation.PushAsync(toPage, isAnimated);
+            await vmBase.ExecuteOnViewModelInit();
         }
         else
             throw new InvalidOperationException($"Unable to resolve type {typeof(T).FullName}");

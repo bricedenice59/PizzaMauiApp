@@ -6,7 +6,7 @@ using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class DetailPageViewModel(INavigationService navigationService) : ViewModelBase
+public partial class DetailPageViewModel(INavigationService navigationService, IToastService toastService) : ViewModelBase
 {
     [ObservableProperty] private Pizza? _pizzaItem;
 
@@ -43,7 +43,7 @@ public partial class DetailPageViewModel(INavigationService navigationService) :
     {
         if (PizzaItem != null && PizzaItem.Quantity == 0)
         {
-            await Toast.Make("Please select a quantity more than 0", ToastDuration.Short).Show();
+            await toastService.DisplayToast("Please select a quantity more than 0");
             return;
         }
 

@@ -109,24 +109,17 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                    <CollectionView.EmptyView>
-                        <Label Text="No pizzas found" 
-                               FontSize="25"
-                               TextColor="Gray"
-                               HorizontalTextAlignment="Center">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding IsLoading}" Value="True">
-                                    <Setter Property="IsVisible" Value="False" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                    </CollectionView.EmptyView>
                 </CollectionView>
+                <Label Text="No pizzas found" 
+                       FontSize="25"
+                       TextColor="Gray"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding HasNoResult}">
+                </Label>
             </VerticalStackLayout>
         </ScrollView>
         <ActivityIndicator Grid.RowSpan="2"
-                            IsRunning="{Binding IsLoading}"
+                           IsRunning="{Binding IsLoading}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
                            Color="DarkGoldenrod"/>

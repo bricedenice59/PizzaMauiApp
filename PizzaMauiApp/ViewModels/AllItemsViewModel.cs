@@ -6,8 +6,7 @@ namespace PizzaMauiApp.ViewModels;
 
 public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationService navigationService) : ViewModelBase
 {
-    public ObservableCollection<Pizza> AllItems { get; set; } = 
-        pizzaService.GetAll().GetAwaiter().GetResult().ToObservableCollection();
+    public ObservableCollection<Pizza> AllItems { get; set; } = [];
 
     [ObservableProperty] 
     private bool _fromSearch;
@@ -15,6 +14,24 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
     [ObservableProperty] 
     private bool _isLoading;
     
+    [ObservableProperty] 
+    private bool _hasNoResult;
+
+    public override async Task ExecuteOnViewModelInit()
+    {
+        HasNoResult = false;
+        IsLoading = true;
+        
+        await pizzaService.GetAll();
+        var allPizzas = await pizzaService.GetAll();
+        foreach (var pizzaItem in allPizzas)
+        {
+            AllItems.Add(pizzaItem);
+        }
+        
+        IsLoading = false;
+    }
+
     public override Task OnNavigatingTo(object? parameter)
     {
         if (parameter is bool)
@@ -25,6 +42,7 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
     [RelayCommand]
     private async Task SearchItems(string keyword)
     {
+        HasNoResult = false;
         AllItems.Clear();
 
         IsLoading = true;
@@ -36,6 +54,7 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
         }
 
         IsLoading = false;
+        HasNoResult = !AllItems.Any();
     }
     
     [RelayCommand]

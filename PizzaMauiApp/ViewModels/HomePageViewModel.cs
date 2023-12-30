@@ -8,8 +8,8 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
 {
     [ObservableProperty] 
     private bool _isLoading;
-    public ObservableCollection<Pizza> PopularPizzas { get; set; } =
-        pizzaService.GetPopular().GetAwaiter().GetResult().ToObservableCollection();
+
+    public ObservableCollection<Pizza> PopularPizzas { get; set; } = [];
 
     #region Commands
     
@@ -37,5 +37,22 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
         await navigationService.NavigateToPage<DetailPage>(pizza);
     }
     
+    #endregion
+
+    #region Overrides
+
+    public override async Task ExecuteOnViewModelInit()
+    {
+        IsLoading = true;
+        await pizzaService.GetAll();
+        var populars = await pizzaService.GetPopular();
+        foreach (var popularPizza in populars)
+        {
+            PopularPizzas.Add(popularPizza);
+        }
+        
+        IsLoading = false;
+    }
+
     #endregion
 }
