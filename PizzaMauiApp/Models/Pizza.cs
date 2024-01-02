@@ -1,6 +1,6 @@
 namespace PizzaMauiApp.Models;
 
-public partial class Pizza : BasePizza
+public class Pizza : BaseModel
 {
     public required string Name { get; set; }
     public required string Image { get; set; }
@@ -9,10 +9,4 @@ public partial class Pizza : BasePizza
     public required string Description { get; set; }
     
     public required string Ingredients { get; set; }
-    
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(Amount))]
-    private int _quantity  = 0;
-
-    public double Amount => Quantity * Price;
-
 }

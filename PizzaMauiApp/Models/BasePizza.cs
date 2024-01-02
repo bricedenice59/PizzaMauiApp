@@ -1,6 +1,6 @@
 namespace PizzaMauiApp.Models;
 
-public class BasePizza : ObservableObject
+public class BaseModel
 {
     public required Guid Id { get; set; }
 }

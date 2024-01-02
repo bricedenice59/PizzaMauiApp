@@ -3,7 +3,10 @@ using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class CartViewModel(IDialogService dialogService, IToastService toastService) : ViewModelBase
+public partial class CartViewModel(
+    IDialogService dialogService, 
+    IToastService toastService,
+    ICartService cartService) : ViewModelBase
 {
     public ObservableCollection<Pizza> Items { get; set; } = new();
 
@@ -13,12 +16,12 @@ public partial class CartViewModel(IDialogService dialogService, IToastService t
     private void OnUpdateCart(Pizza pizzaItem)
     {
         var item = Items.FirstOrDefault(i => i.Id == pizzaItem.Id);
-        if (item is not null)
-            item.Quantity = pizzaItem.Quantity;
-        else
-        {
-
-        }
+        // if (item is not null)
+        //     item.Quantity = pizzaItem.Quantity;
+        // else
+        // {
+        //
+        // }
         RecalculateTotalAmount();
     }
 
@@ -47,7 +50,7 @@ public partial class CartViewModel(IDialogService dialogService, IToastService t
     private void RecalculateTotalAmount()
     {
         Thread.Sleep(10000);
-        TotalAmount = Items.Sum(x => x.Amount);
+        //TotalAmount = Items.Sum(x => x.Amount);
     }
 
 }

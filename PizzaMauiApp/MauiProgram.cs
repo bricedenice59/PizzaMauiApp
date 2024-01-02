@@ -23,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDIService, DIService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<IPizzaService, PizzaService>();
+        builder.Services.AddSingleton<ICartService, CartService>();
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IToastService, ToastService>();
         
