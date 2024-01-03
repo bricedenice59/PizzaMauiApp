@@ -25,6 +25,12 @@ public partial class DetailPageViewModel(INavigationService navigationService,
         }
     }
 
+    public override Task OnNavigatingFrom(object? parameter)
+    {
+        SetQuantityOnPageChanged();
+        return base.OnNavigatingFrom(parameter);
+    }
+
     public override Task OnNavigatingTo(object? parameter)
     {
         if (parameter is not null)
@@ -34,11 +40,16 @@ public partial class DetailPageViewModel(INavigationService navigationService,
 
     public override Task ExecuteOnViewModelInit()
     {
-        if (PizzaItem != null && 
+        SetQuantityOnPageChanged();
+        return base.ExecuteOnViewModelInit();
+    }
+
+    public void SetQuantityOnPageChanged()
+    {
+        if (PizzaItem != null &&
             cartService.GetCart().TryGetValue(PizzaItem.Id, out int quantity))
             Quantity = quantity;
-
-        return base.ExecuteOnViewModelInit();
+        else Quantity = 0;
     }
 
     [RelayCommand]
@@ -66,7 +77,7 @@ public partial class DetailPageViewModel(INavigationService navigationService,
         if (Quantity >= 1)
             Quantity--;
         
-        cartService.RemoveFromCart(PizzaItem.Id);
+        cartService.RemoveOneFromCart(PizzaItem.Id);
     }
     
     [RelayCommand]

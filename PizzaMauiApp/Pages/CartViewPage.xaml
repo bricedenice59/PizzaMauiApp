@@ -3,12 +3,132 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:models="clr-namespace:PizzaMauiApp.Models"
+             xmlns:models="clr-namespace:PizzaMauiApp.ViewModels.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              x:Class="PizzaMauiApp.Pages.CartViewPage"
              x:DataType="vms:CartViewModel"
+             BackgroundColor="PaleGoldenrod"
              Title="Cart">
-    <ContentPage.Content>
-        
-    </ContentPage.Content>
+    <ContentPage.ToolbarItems>
+        <controls:BindableToolbarItem Text="Clear Cart"
+                             Command="{Binding ClearCartCommand}"
+                             IsVisible = "{Binding HasItemsInCart}" />
+    </ContentPage.ToolbarItems>
+    <Grid>
+            <ScrollView>
+                <VerticalStackLayout Padding="10">
+                    <CollectionView ItemsSource="{Binding Items}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CartPizzaModel">
+                                <Border StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="0"
+                                    BackgroundColor="White"
+                                    Padding="10">
+                                    <Grid ColumnDefinitions="25, Auto, 50, *, 80, 25">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Quantity}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center" 
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Grid.Column="1"
+                                               Text="x"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Image Grid.Column="2"
+                                                Source="{Binding Image}"
+                                                HeightRequest="25"
+                                                WidthRequest="25"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center" />
+                                        <VerticalStackLayout Grid.Column="3"
+                                            VerticalOptions="Center"
+                                            Spacing="2">
+                                            <Label Text="{Binding Name}"/>
+                                            <Label Text="{Binding Price, StringFormat='${0:N2}'}"
+                                                   FontSize="12"/>
+                                        </VerticalStackLayout>
+                                        <Label Grid.Column="4"
+                                            Text="{Binding Amount, StringFormat='${0:N2}'}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            FontSize="15"
+                                            FontAttributes="Bold"/>
+                                        <Image Grid.Column="5"
+                                               Source="trash"
+                                               HeightRequest=" 25"
+                                               WidthRequest="25"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End">
+                                            <Image.Behaviors>
+                                                <toolkit:IconTintColorBehavior TintColor="Red"/>
+                                            </Image.Behaviors>
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding RemoveFromCartCommand, 
+                                                    Source={RelativeSource AncestorType={x:Type vms:CartViewModel}}}"
+                                                                      CommandParameter="{Binding Id}"/>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </ScrollView>
+        <VerticalStackLayout IsVisible="{Binding HasItemsInCart, 
+                                        Converter={StaticResource Bool2VisibilityHiddenConverter}}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Spacing="15">
+            <Rectangle HeightRequest="100"
+                       Background="Transparent"/>
+            <Label Text="No items in the cart"
+                   FontSize="25"
+                   TextColor= "Gray" 
+                   HorizontalTextAlignment="Center">
+            </Label>
+            <Button Text="Explore all pizzas"
+                    HorizontalOptions="Center"
+                    BackgroundColor= "Goldenrod"
+                    Command="{Binding  NavigateHomeCommand, Source={RelativeSource AncestorType={x:Type vms:CartViewModel}}}"/>
+        </VerticalStackLayout>
+            <Border StrokeShape="RoundRectangle 40"
+                    BackgroundColor="DarkGoldenrod"
+                    StrokeThickness="0"
+                    VerticalOptions="End"
+                    Margin="5"
+                    Padding="10">
+                <Grid ColumnDefinitions="*, *">
+                    <Label Grid.Column="0"
+                            Padding="18, 0"
+                            TextColor= "White"
+                            VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Total："
+                                      FontSize="18" />
+                                <Span Text="{Binding TotalAmount, StringFormat='${0:N2}'}"
+                                        FontSize="20"
+                                        FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Button Grid.Column="1"
+                        Text="Place Order"
+                        BackgroundColor= "Goldenrod"
+                        CornerRadius="22"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Padding="25, 10"
+                        IsEnabled="{Binding HasItemsInCart}"/>
+                    </Grid>
+            </Border>
+        </Grid>
 </ContentPage>

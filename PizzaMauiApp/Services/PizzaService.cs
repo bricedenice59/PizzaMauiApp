@@ -8,7 +8,18 @@ public class PizzaService : IPizzaService
 {
     private const string AllPizzas = "All";
     private const string PopularPizzas = "Popular";
-    
+
+    public Task<Pizza?> GetById(Guid id)
+    {
+        if (id.Equals(Guid.Empty))
+            return null;
+        return Task.Run(async () =>
+        {
+            var allPizzas = await GetAll();
+            return allPizzas.FirstOrDefault(x => x.Id == id);
+        });
+    }
+
     public async Task<IEnumerable<Pizza>> GetAll()
     {
         if (Cache.Any(x => x.Item1 == AllPizzas))
@@ -54,6 +65,7 @@ public class PizzaService : IPizzaService
 
 public interface IPizzaService
 {
+    Task<Pizza?> GetById(Guid id);
     Task<IEnumerable<Pizza>> GetAll();
     Task<IEnumerable<Pizza>> Lookup(string key);
     Task<IEnumerable<Pizza>> GetPopular(int count = 6);

@@ -12,7 +12,7 @@ public partial class CartViewPage : ContentPage
 {
     public CartViewPage(IDIService diService)
     {
-        BindingContext = diService.ResolveViewModel<CartViewModel>()!;
+        BindingContext = diService.ResolveViewModel<CartViewModel>();
         InitializeComponent();
     }
 }

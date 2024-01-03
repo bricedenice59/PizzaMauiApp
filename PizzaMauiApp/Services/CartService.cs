@@ -4,8 +4,10 @@ namespace PizzaMauiApp.Services;
 public interface ICartService
 {
     void AddToCart(Guid pizzaId);
+    void ClearCart();
     Dictionary<Guid, int> GetCart();
-    void RemoveFromCart(Guid pizzaId);
+    void RemoveOneFromCart(Guid pizzaId);
+    void RemoveAllFromCart(Guid pizzaId);
 }
 
 public class CartService : ICartService
@@ -19,9 +21,14 @@ public class CartService : ICartService
         else _cartItems[pizzaId] += 1;
     }
 
+    public void ClearCart()
+    {
+        _cartItems.Clear();
+    }
+
     public Dictionary<Guid, int> GetCart() => _cartItems;
     
-    public void RemoveFromCart(Guid pizzaId)
+    public void RemoveOneFromCart(Guid pizzaId)
     {
         if (!_cartItems.ContainsKey(pizzaId))
             return;
@@ -33,5 +40,12 @@ public class CartService : ICartService
         }
         
         _cartItems[pizzaId] -= 1;
+    }
+    
+    public void RemoveAllFromCart(Guid pizzaId)
+    {
+        if (!_cartItems.ContainsKey(pizzaId))
+            return;
+        _cartItems.Remove(pizzaId);
     }
 }
