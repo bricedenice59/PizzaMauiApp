@@ -80,6 +80,12 @@ public partial class CartViewModel(
     {
         await navigationService.NavigateToPage<HomePage>();
     }
+    
+    [RelayCommand]
+    private async Task OnNavigateBack()
+    {
+        await navigationService.NavigateBack();
+    }
 
     private void RecalculateTotalAmount()
     {

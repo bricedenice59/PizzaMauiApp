@@ -10,6 +10,13 @@
              x:DataType="vms:CartViewModel"
              BackgroundColor="PaleGoldenrod"
              Title="Cart">
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+            Command="{Binding NavigateBackCommand }"
+            IsEnabled="True"/>
+    </Shell.BackButtonBehavior>
+    
     <ContentPage.ToolbarItems>
         <controls:BindableToolbarItem Text="Clear Cart"
                              Command="{Binding ClearCartCommand}"
