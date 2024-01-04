@@ -55,7 +55,7 @@ public partial class AllItemsViewModel : ViewModelBase
     public override Task OnNavigatingTo(object? parameter)
     {
         if (parameter is bool)
-            FromSearch = bool.Parse(parameter.ToString());
+            FromSearch = bool.Parse(parameter.ToString()!);
         return base.OnNavigatingTo(parameter);
     }
     

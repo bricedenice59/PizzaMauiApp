@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net8.0-android;net8.0-ios;</TargetFrameworks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
         <OutputType>Exe</OutputType>
         <RootNamespace>PizzaMauiApp</RootNamespace>

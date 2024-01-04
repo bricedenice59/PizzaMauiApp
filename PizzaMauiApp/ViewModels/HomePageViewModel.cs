@@ -33,9 +33,9 @@ public partial class HomePageViewModel : ViewModelBase
     #region Commands
     
     [RelayCommand]
-    public async Task OnGetBestOffer()
+    public Task OnGetBestOffer()
     {
-
+        throw new NotImplementedException();
     }
     
     [RelayCommand]

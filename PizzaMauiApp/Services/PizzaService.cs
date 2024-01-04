@@ -12,7 +12,7 @@ public class PizzaService : IPizzaService
     public Task<Pizza?> GetById(Guid id)
     {
         if (id.Equals(Guid.Empty))
-            return null;
+            return Task.FromResult<Pizza?>(null);
         return Task.Run(async () =>
         {
             var allPizzas = await GetAll();
@@ -26,6 +26,8 @@ public class PizzaService : IPizzaService
             return await Task.FromResult(Cache.First(x => x.Item1 == AllPizzas).Item2);
         
         var all = await SeedPizzaItems.GetItems();
+        if (all == null) return new List<Pizza>();
+        
         Cache.Add(new ValueTuple<string, IEnumerable<Pizza>>(AllPizzas, all));
         return all;
     }
