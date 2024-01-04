@@ -3,11 +3,26 @@ using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class MainPageViewModel(INavigationService navigationService) : ViewModelBase
+public partial class MainPageViewModel : ViewModelBase
 {
+    #region Fields
+    private readonly INavigationService _navigationService;
+    #endregion
+    
+    #region Ctor
+
+    public MainPageViewModel(
+        INavigationService navigationService)
+    {
+        _navigationService = navigationService;
+    }
+    #endregion
+    
+    #region Commands
     [RelayCommand]
     private async Task OnGetStarted()
     {
-        await navigationService.NavigateToPage<HomePage>();
+        await _navigationService.NavigateToPage<HomePage>();
     }
+    #endregion
 }

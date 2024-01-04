@@ -4,12 +4,31 @@ using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class HomePageViewModel(IPizzaService pizzaService, INavigationService navigationService) : ViewModelBase
+public partial class HomePageViewModel : ViewModelBase
 {
+    #region Fields
+    private readonly INavigationService _navigationService;
+    private readonly IPizzaService _pizzaService;
+    #endregion
+    
+    #region Ctor
+
+    public HomePageViewModel(
+        INavigationService navigationService,
+        IPizzaService pizzaService)
+    {
+        _navigationService = navigationService;
+        _pizzaService = pizzaService;
+    }
+    #endregion
+    
+    #region Properties
     [ObservableProperty] 
     private bool _isLoading;
 
     public ObservableCollection<Pizza> PopularPizzas { get; set; } = [];
+    
+    #endregion
 
     #region Commands
     
@@ -22,19 +41,19 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
     [RelayCommand]
     private async Task OnLookup()
     {
-        await navigationService.NavigateToPage<AllItemsPage>(true);
+        await _navigationService.NavigateToPage<AllItemsPage>(true);
     }
     
     [RelayCommand]
     private async Task OnViewAll()
     {
-        await navigationService.NavigateToPage<AllItemsPage>();
+        await _navigationService.NavigateToPage<AllItemsPage>();
     }
     
     [RelayCommand]
     private async Task OnViewMore(Pizza pizza)
     {
-        await navigationService.NavigateToPage<DetailPage>(pizza);
+        await _navigationService.NavigateToPage<DetailPage>(pizza);
     }
     
     #endregion
@@ -44,8 +63,8 @@ public partial class HomePageViewModel(IPizzaService pizzaService, INavigationSe
     public override async Task ExecuteOnViewModelInit()
     {
         IsLoading = true;
-        await pizzaService.GetAll();
-        var populars = await pizzaService.GetPopular();
+        await _pizzaService.GetAll();
+        var populars = await _pizzaService.GetPopular();
         foreach (var popularPizza in populars)
         {
             PopularPizzas.Add(popularPizza);

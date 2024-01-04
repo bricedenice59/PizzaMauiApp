@@ -4,8 +4,25 @@ using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationService navigationService) : ViewModelBase
+public partial class AllItemsViewModel : ViewModelBase
 {
+    #region Fields
+    private readonly IPizzaService _pizzaService;
+    private readonly INavigationService _navigationService;
+    #endregion
+    
+    #region Ctor
+
+    public AllItemsViewModel(
+        IPizzaService pizzaService, 
+        INavigationService navigationService)
+    {
+        _pizzaService = pizzaService;
+        _navigationService = navigationService;
+    }
+    #endregion
+    
+    #region Properties
     public ObservableCollection<Pizza> AllItems { get; set; } = [];
 
     [ObservableProperty] 
@@ -16,14 +33,17 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
     
     [ObservableProperty] 
     private bool _hasNoResult;
+    
+    #endregion
 
+    #region Overrides
     public override async Task ExecuteOnViewModelInit()
     {
         HasNoResult = false;
         IsLoading = true;
         
-        await pizzaService.GetAll();
-        var allPizzas = await pizzaService.GetAll();
+        await _pizzaService.GetAll();
+        var allPizzas = await _pizzaService.GetAll();
         foreach (var pizzaItem in allPizzas)
         {
             AllItems.Add(pizzaItem);
@@ -39,6 +59,9 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
         return base.OnNavigatingTo(parameter);
     }
     
+    #endregion
+    
+    #region Commands
     [RelayCommand]
     private async Task SearchItems(string keyword)
     {
@@ -47,7 +70,7 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
 
         IsLoading = true;
         
-        var items = await pizzaService.Lookup(keyword);
+        var items = await _pizzaService.Lookup(keyword);
         foreach (var item in items)
         {
             AllItems.Add(item);
@@ -60,6 +83,7 @@ public partial class AllItemsViewModel(IPizzaService pizzaService, INavigationSe
     [RelayCommand]
     private async Task OnViewMore(Pizza pizzaItem)
     {
-        await navigationService.NavigateToPage<DetailPage>(pizzaItem);
+        await _navigationService.NavigateToPage<DetailPage>(pizzaItem);
     }
+    #endregion
 }

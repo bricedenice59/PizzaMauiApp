@@ -4,10 +4,28 @@ using PizzaMauiApp.Services;
 
 namespace PizzaMauiApp.ViewModels;
 
-public partial class DetailPageViewModel(INavigationService navigationService, 
-    IToastService toastService,
-    ICartService cartService) : ViewModelBase
+public partial class DetailPageViewModel : ViewModelBase
 {
+    #region Fields
+    private readonly INavigationService _navigationService;
+    private readonly IToastService _toastService;
+    private readonly ICartService _cartService;
+    #endregion
+    
+    #region Ctor
+
+    public DetailPageViewModel(
+        INavigationService navigationService, 
+        IToastService toastService,
+        ICartService cartService)
+    {
+        _navigationService = navigationService;
+        _toastService = toastService;
+        _cartService = cartService;
+    }
+    #endregion
+    
+    #region Properties
     [ObservableProperty] 
     private Pizza? _pizzaItem;
     
@@ -24,7 +42,9 @@ public partial class DetailPageViewModel(INavigationService navigationService,
             return 0;
         }
     }
+    #endregion
 
+    #region Overrides
     public override Task OnNavigatingFrom(object? parameter)
     {
         SetQuantityOnPageChanged();
@@ -43,19 +63,13 @@ public partial class DetailPageViewModel(INavigationService navigationService,
         SetQuantityOnPageChanged();
         return base.ExecuteOnViewModelInit();
     }
-
-    public void SetQuantityOnPageChanged()
-    {
-        if (PizzaItem != null &&
-            cartService.GetCart().TryGetValue(PizzaItem.Id, out int quantity))
-            Quantity = quantity;
-        else Quantity = 0;
-    }
-
+    #endregion
+    
+    #region Commands
     [RelayCommand]
     private async Task OnGoBack()
     {
-        await navigationService.NavigateBack();
+        await _navigationService.NavigateBack();
     }
 
     [RelayCommand]
@@ -66,7 +80,7 @@ public partial class DetailPageViewModel(INavigationService navigationService,
 
         Quantity++;
         
-        cartService.AddToCart(PizzaItem.Id);
+        _cartService.AddToCart(PizzaItem.Id);
     }
 
     [RelayCommand]
@@ -77,7 +91,7 @@ public partial class DetailPageViewModel(INavigationService navigationService,
         if (Quantity >= 1)
             Quantity--;
         
-        cartService.RemoveOneFromCart(PizzaItem.Id);
+        _cartService.RemoveOneFromCart(PizzaItem.Id);
     }
     
     [RelayCommand]
@@ -88,10 +102,21 @@ public partial class DetailPageViewModel(INavigationService navigationService,
 
         if(Quantity == 0)
         {
-            await toastService.DisplayToast("Please select a quantity more than 0");
+            await _toastService.DisplayToast("Please select a quantity more than 0");
             return;
         }
 
-        await navigationService.NavigateToPage<CartViewPage>();
+        await _navigationService.NavigateToPage<CartViewPage>();
     }
+    #endregion
+    
+    #region Methods
+    private void SetQuantityOnPageChanged()
+    {
+        if (PizzaItem != null &&
+            _cartService.GetCart().TryGetValue(PizzaItem.Id, out int quantity))
+            Quantity = quantity;
+        else Quantity = 0;
+    }
+    #endregion
 }
