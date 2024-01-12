@@ -1,4 +1,6 @@
-﻿using PizzaMauiApp.Pages;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels;
 using Serilog;
@@ -40,6 +42,8 @@ public static class MauiProgram
             }
         );
         
+        builder.Services.AddSingleton<IAppSettings, AppSettings>();
+
         return builder.Build();
     }
     
