@@ -55,7 +55,6 @@ public class PizzaService : IPizzaService
             ? allPizzas
             : allPizzas.Where(x => x.Name.Contains(key, StringComparison.OrdinalIgnoreCase));
     }
-      
 
     public async Task<IEnumerable<Pizza>> GetPopular(int count = 6)
     {
@@ -63,6 +62,8 @@ public class PizzaService : IPizzaService
             return Cache.First(x => x.Item1 == PopularPizzas).Item2;
         
         var allPizzas = await GetAll();
+        if (!allPizzas.Any())
+            return allPizzas;
         
         var popular = allPizzas.OrderBy(x => Guid.NewGuid())
             .Take(count);

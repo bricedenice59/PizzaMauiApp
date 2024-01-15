@@ -8,7 +8,6 @@ public partial class HomePageViewModel : ViewModelBase
 {
     #region Fields
     private readonly ILogger _logger;
-
     private readonly INavigationService _navigationService;
     private readonly IPizzaService _pizzaService;
 
@@ -31,6 +30,15 @@ public partial class HomePageViewModel : ViewModelBase
     #region Properties
     [ObservableProperty] 
     private bool _isLoading;
+    
+    [ObservableProperty] 
+    [NotifyCanExecuteChangedFor(nameof(GetBestOfferCommand))]
+    [NotifyCanExecuteChangedFor(nameof(LookupCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ViewAllCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ViewMoreCommand))]
+    private bool _loadingError;
+
+    private bool CanInteract => !LoadingError;
 
     public ObservableCollection<Pizza> PopularPizzas { get; set; } = [];
     
@@ -38,28 +46,38 @@ public partial class HomePageViewModel : ViewModelBase
 
     #region Commands
     
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanInteract))]
     public Task OnGetBestOffer()
     {
         throw new NotImplementedException();
     }
     
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanInteract))]
     private async Task OnLookup()
     {
         await _navigationService.NavigateToPage<AllItemsPage>(true);
     }
     
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanInteract))]
     private async Task OnViewAll()
     {
         await _navigationService.NavigateToPage<AllItemsPage>();
     }
     
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanInteract))]
     private async Task OnViewMore(Pizza pizza)
     {
         await _navigationService.NavigateToPage<DetailPage>(pizza);
+    }
+    
+    [RelayCommand]
+    private async Task OnFetchDataWhenNoResult()
+    {
+        LoadingError = false;
+        
+        await FetchDataAndPopulate();
+        
+        LoadingError = !PopularPizzas.Any();
     }
     
     #endregion
@@ -69,15 +87,22 @@ public partial class HomePageViewModel : ViewModelBase
     public override async Task ExecuteOnViewModelInit()
     {
         IsLoading = true;
-        var allPizzas = await _pizzaService.GetAll();
+
+        await FetchDataAndPopulate();
+        
+        IsLoading = false;
+
+        LoadingError = !PopularPizzas.Any();
+    }
+
+    #endregion
+
+    private async Task FetchDataAndPopulate()
+    {
         var populars = await _pizzaService.GetPopular();
         foreach (var popularPizza in populars)
         {
             PopularPizzas.Add(popularPizza);
         }
-        
-        IsLoading = false;
     }
-
-    #endregion
 }

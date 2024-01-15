@@ -18,6 +18,10 @@
     
     <ScrollView>
             <VerticalStackLayout>
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Color="DarkGoldenrod"/>
                 <Border Padding="15"
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 10"
@@ -95,7 +99,8 @@
                     </Label>
                 </Grid>
                 
-                <FlexLayout 
+                <FlexLayout IsVisible="{Binding LoadingError,
+                                    Converter={StaticResource Bool2VisibilityHiddenConverter}}"
                     BindableLayout.ItemsSource="{Binding PopularPizzas}"
                     Wrap="Wrap">
                     <BindableLayout.ItemTemplate>
@@ -161,10 +166,23 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
-                <ActivityIndicator IsRunning="{Binding IsLoading}"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    Color="DarkGoldenrod"/>
+                
+                <VerticalStackLayout IsVisible="{Binding LoadingError}"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="15">
+                    <Rectangle HeightRequest="100"
+                               Background="Transparent"/>
+                    <Label Text="Error loading data... check your internet connection."
+                           FontSize="25"
+                           TextColor= "Gray" 
+                           HorizontalTextAlignment="Center">
+                    </Label>
+                    <Button Text="Reload"
+                            HorizontalOptions="Center"
+                            BackgroundColor= "Goldenrod"
+                            Command="{Binding  FetchDataWhenNoResultCommand}"/>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
 </ContentPage>
