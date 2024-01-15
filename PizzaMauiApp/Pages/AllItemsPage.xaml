@@ -54,9 +54,12 @@
                                     VerticalOptions="Start">
                                 <Grid ColumnDefinitions="130, *">
                                     <Image Grid.Column="0"
-                                           Source="{Binding MainImageUrl}"
                                            HeightRequest="130"
-                                           WidthRequest="130"/>
+                                           WidthRequest="130">
+                                        <Image.Source>
+                                            <UriImageSource Uri="{Binding MainImageUrl}"/>
+                                        </Image.Source>
+                                    </Image>
                                     <VerticalStackLayout Grid.Column="1"
                                                          VerticalOptions="Center"
                                                          Spacing="5">

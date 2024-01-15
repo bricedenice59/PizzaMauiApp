@@ -109,8 +109,10 @@
                                      RowSpacing="5" 
                                      Margin="15,0,10,0">
                                    <Image Grid.Row="0"
-                                          WidthRequest="130"
-                                          Source="{Binding MainImageUrl}">
+                                          WidthRequest="130">
+                                       <Image.Source>
+                                           <UriImageSource Uri="{Binding MainImageUrl}"/>
+                                       </Image.Source>
                                    </Image>
                                    <Label Grid.Row="1"
                                           Text="{Binding Name}"

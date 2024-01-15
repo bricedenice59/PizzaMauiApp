@@ -17,11 +17,14 @@
             <ScrollView Padding="15">
                 <VerticalStackLayout Padding="15">
                     <Image 
-                           Source="{Binding PizzaItem.MainImageUrl, FallbackValue=null}"
                            HeightRequest="200"
                            WidthRequest="200"
                            HorizontalOptions="Center"
-                           VerticalOptions="Center"/>
+                           VerticalOptions="Center">
+                        <Image.Source>
+                            <UriImageSource Uri="{Binding PizzaItem.MainImageUrl}"/>
+                        </Image.Source>
+                    </Image>
                     <Label Text="{Binding PizzaItem.Name, FallbackValue=null}"
                            FontSize="20"
                            FontAttributes="Bold"
