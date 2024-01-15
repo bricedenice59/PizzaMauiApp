@@ -31,6 +31,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IToastService, ToastService>();
         builder.Services.AddSingleton<IRequestApiService, RequestApiService>();
+        builder.Services.AddSingleton<IAppSettings, AppSettings>();
         
         builder.Services.AddLogging(
             configure =>
@@ -39,9 +40,30 @@ public static class MauiProgram
             }
         );
         
-        builder.Services.AddSingleton<IAppSettings, AppSettings>();
+#if DEBUG
+        builder.Services.AddHttpClient("customHttpClient", httpClient =>
+            {
+                var baseAddress =
+                    DeviceInfo.Platform == DevicePlatform.Android
+                        ? "https://10.0.2.2:7121"
+                        : "https://localhost:7121";
 
+                httpClient.BaseAddress = new Uri(baseAddress);
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+                {
+                    if (cert != null && cert.Issuer.Equals("CN=localhost"))
+                        return true;
+                    return errors == System.Net.Security.SslPolicyErrors.None;
+                };
+                return handler;
+            });
+        
         return builder.Build();
+#endif
     }
     
     private static void SetupSerilog(this IServiceCollection serviceCollection)

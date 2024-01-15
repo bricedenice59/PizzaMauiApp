@@ -11,11 +11,13 @@ public interface IRequestApiService
 public class RequestApiService : IRequestApiService
 {
     private readonly ILogger _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly TimeSpan _duration = TimeSpan.FromMilliseconds(20000); //20s
     
-    public RequestApiService(ILogger logger)
+    public RequestApiService(ILogger logger, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
     }
     
     public async Task<(int,T?)> Get<T>(string endpointUrl, CancellationToken cancellationToken, TimeSpan timeout = default)
@@ -29,7 +31,7 @@ public class RequestApiService : IRequestApiService
                 : timeout;
         try
         {
-            using var client = new HttpClient();
+            using var client = _httpClientFactory.CreateClient("customHttpClient");
             client.Timeout = tsTimeout;
             client.BaseAddress = new Uri(endpointUrl);
             
