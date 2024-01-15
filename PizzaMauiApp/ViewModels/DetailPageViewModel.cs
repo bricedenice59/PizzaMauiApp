@@ -37,7 +37,7 @@ public partial class DetailPageViewModel : ViewModelBase
         get
         {
             if (PizzaItem != null) 
-                return Quantity * PizzaItem.Price;
+                return Quantity * PizzaItem.PriceWithExcludedVAT;
             
             return 0;
         }

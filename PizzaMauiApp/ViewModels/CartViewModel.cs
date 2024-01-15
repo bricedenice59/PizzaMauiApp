@@ -54,10 +54,10 @@ public partial class CartViewModel : ViewModelBase
                 {
                     Id = itemInCart.Key,
                     Name = pizzaItem.Name,
-                    Image = pizzaItem.Image,
-                    Price = pizzaItem.Price,
+                    Image = pizzaItem.MainImageUrl,
+                    Price = pizzaItem.PriceWithExcludedVAT,
                     Quantity = itemInCart.Value,
-                    Amount = pizzaItem.Price * itemInCart.Value
+                    Amount = pizzaItem.PriceWithExcludedVAT * itemInCart.Value
                 }
             );
         }

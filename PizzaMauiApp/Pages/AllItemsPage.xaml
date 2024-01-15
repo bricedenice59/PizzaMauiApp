@@ -54,7 +54,7 @@
                                     VerticalOptions="Start">
                                 <Grid ColumnDefinitions="130, *">
                                     <Image Grid.Column="0"
-                                           Source="{Binding Image}"
+                                           Source="{Binding MainImageUrl}"
                                            HeightRequest="130"
                                            WidthRequest="130"/>
                                     <VerticalStackLayout Grid.Column="1"
@@ -64,7 +64,7 @@
                                                FontSize="20"/>
                                         <Grid ColumnDefinitions="*, *">
                                             <Label Grid.Column="0"
-                                                   Text="{Binding Price, StringFormat='{0}€'}"
+                                                   Text="{Binding PriceWithExcludedVAT, StringFormat='{0}€'}"
                                                    FontSize="15"
                                                    FontAttributes="Bold"/>
                                             <HorizontalStackLayout 

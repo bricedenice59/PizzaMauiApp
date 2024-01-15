@@ -17,7 +17,7 @@
             <ScrollView Padding="15">
                 <VerticalStackLayout Padding="15">
                     <Image 
-                           Source="{Binding PizzaItem.Image, FallbackValue=null}"
+                           Source="{Binding PizzaItem.MainImageUrl, FallbackValue=null}"
                            HeightRequest="200"
                            WidthRequest="200"
                            HorizontalOptions="Center"
@@ -29,7 +29,7 @@
                            VerticalOptions="Center"/>
                     <Grid ColumnDefinitions="*, *" Margin="0,20,0,0">
                         <Label Grid.Column="0"
-                               Text="{Binding PizzaItem.Price, StringFormat='{0}€', FallbackValue=null}"
+                               Text="{Binding PizzaItem.PriceWithExcludedVAT, StringFormat='{0}€', FallbackValue=null}"
                                FontSize="18"
                                FontAttributes="Bold"/>
                         <HorizontalStackLayout 

@@ -110,7 +110,7 @@
                                      Margin="15,0,10,0">
                                    <Image Grid.Row="0"
                                           WidthRequest="130"
-                                          Source="{Binding Image}">
+                                          Source="{Binding MainImageUrl}">
                                    </Image>
                                    <Label Grid.Row="1"
                                           Text="{Binding Name}"
@@ -121,7 +121,7 @@
                                    <Grid Grid.Row="2" ColumnDefinitions="*,*" 
                                          >
                                        <Label Grid.Column="0"
-                                              Text="{Binding Price, StringFormat='{0}€'}"
+                                              Text="{Binding PriceWithExcludedVAT, StringFormat='{0}€'}"
                                               FontSize="15"
                                               FontAttributes="Bold"
                                               />

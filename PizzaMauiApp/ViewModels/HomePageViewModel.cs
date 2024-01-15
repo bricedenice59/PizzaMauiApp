@@ -70,11 +70,11 @@ public partial class HomePageViewModel : ViewModelBase
     {
         IsLoading = true;
         var allPizzas = await _pizzaService.GetAll();
-        // var populars = await _pizzaService.GetPopular();
-        // foreach (var popularPizza in populars)
-        // {
-        //     PopularPizzas.Add(popularPizza);
-        // }
+        var populars = await _pizzaService.GetPopular();
+        foreach (var popularPizza in populars)
+        {
+            PopularPizzas.Add(popularPizza);
+        }
         
         IsLoading = false;
     }
