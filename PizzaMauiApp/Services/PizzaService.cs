@@ -1,13 +1,22 @@
-using System.Text.Json;
-using PizzaMauiApp.Helpers;
 using PizzaMauiApp.Models;
-
 namespace PizzaMauiApp.Services;
 
 public class PizzaService : IPizzaService
 {
     private const string AllPizzas = "All";
     private const string PopularPizzas = "Popular";
+    
+    private readonly IRequestApiService _requestApiService;
+    private readonly IAppSettings _appSettings;
+    private readonly ILogger _logger;
+    public PizzaService(ILogger logger, 
+        IRequestApiService requestApiService, 
+        IAppSettings appSettings)
+    {
+        _logger = logger;
+        _requestApiService = requestApiService;
+        _appSettings = appSettings;
+    }
 
     public Task<Pizza?> GetById(Guid id)
     {
@@ -20,46 +29,46 @@ public class PizzaService : IPizzaService
         });
     }
 
-    public async Task<IEnumerable<Pizza>> GetAll()
+    public async Task<IEnumerable<Pizza>> GetAll(CancellationToken cancellationToken = new ())
     {
         if (Cache.Any(x => x.Item1 == AllPizzas))
+        {
+            _logger.Information($"GetAll from cache.");
             return await Task.FromResult(Cache.First(x => x.Item1 == AllPizzas).Item2);
+        }
+ 
+        string endPoint = _appSettings.Settings.WebAPI.EndpointUrl + _appSettings.Settings.WebAPI.GetAllEndpointName;
+        _logger.Information($"Request API {endPoint}");
         
-        var all = await SeedPizzaItems.GetItems();
-        if (all == null) return new List<Pizza>();
+        var all = await _requestApiService.Get<IEnumerable<Pizza>>(endPoint, cancellationToken);
+        if (all.Item2 == null) return new List<Pizza>();
         
-        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>>(AllPizzas, all));
-        return all;
+        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>>(AllPizzas, all.Item2));
+        return all.Item2;
     }
 
-    public Task<IEnumerable<Pizza>> Lookup(string key)
+    public async Task<IEnumerable<Pizza>> Lookup(string key)
     {
-        return Task.Run(async () =>
-        {
-            var allPizzas = await GetAll();
+        var allPizzas = await GetAll();
             
-            return string.IsNullOrEmpty(key)
-                ? allPizzas
-                : allPizzas.Where(x => x.Name.Contains(key, StringComparison.OrdinalIgnoreCase));
-        });
+        return string.IsNullOrEmpty(key)
+            ? allPizzas
+            : allPizzas.Where(x => x.Name.Contains(key, StringComparison.OrdinalIgnoreCase));
     }
       
 
-    public Task<IEnumerable<Pizza>> GetPopular(int count = 6)
+    public async Task<IEnumerable<Pizza>> GetPopular(int count = 6)
     {
-        return Task.Run( async () =>
-        {
-            if (Cache.Any(x => x.Item1 == PopularPizzas))
-                return Cache.First(x => x.Item1 == PopularPizzas).Item2;
-            
-            var allPizzas = await GetAll();
-            
-            var popular = allPizzas.OrderBy(x => Guid.NewGuid())
-                .Take(count);
-            Cache.Add(new ValueTuple<string, IEnumerable<Pizza>>(PopularPizzas, popular));
+        if (Cache.Any(x => x.Item1 == PopularPizzas))
+            return Cache.First(x => x.Item1 == PopularPizzas).Item2;
+        
+        var allPizzas = await GetAll();
+        
+        var popular = allPizzas.OrderBy(x => Guid.NewGuid())
+            .Take(count);
+        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>>(PopularPizzas, popular));
 
-            return popular;
-        });
+        return popular;
     }
 
     public List<(string, IEnumerable<Pizza>)> Cache { get; } = new();
@@ -68,7 +77,7 @@ public class PizzaService : IPizzaService
 public interface IPizzaService
 {
     Task<Pizza?> GetById(Guid id);
-    Task<IEnumerable<Pizza>> GetAll();
+    Task<IEnumerable<Pizza>> GetAll(CancellationToken cancellationToken = new());
     Task<IEnumerable<Pizza>> Lookup(string key);
     Task<IEnumerable<Pizza>> GetPopular(int count = 6);
 }

@@ -8,4 +8,4 @@ global using CommunityToolkit.Maui;
 global using CommunityToolkit.Maui.Core.Extensions;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
-global using Microsoft.Extensions.Logging;
+global using ILogger = Serilog.ILogger;

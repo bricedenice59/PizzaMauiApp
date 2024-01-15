@@ -1,51 +1,46 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using PizzaMauiApp.Settings;
-using ILogger = Serilog.ILogger;
 
 namespace PizzaMauiApp.Services;
 
 public interface IAppSettings
 {
-    ApplicationSettings? Settings { get; set; }
+    ApplicationSettings Settings { get; set; }
 }
 
 public class AppSettings : IAppSettings
 {
     private const string AppSettingsJsonPath = "PizzaMauiApp.appsettings.json";
-    public ApplicationSettings? Settings { get; set; } = new();
+    public ApplicationSettings Settings { get; set; }
 
     public AppSettings(ILogger logger)
     {
+        Settings = new ApplicationSettings();
         logger.Information("Getting application settings... from appsettings.json");
-        
+
         var ass = Assembly.GetExecutingAssembly();
         var settings = ass.GetManifestResourceStream(AppSettingsJsonPath);
-        
-        try
-        {
-            if (settings == null)
-            {
-                logger.Error($"Could not read {AppSettingsJsonPath}");
-                return;
-            }
-            
-            // Add appsettings.json file
-            var configRoot = new ConfigurationBuilder()
-                .AddJsonStream(settings)
-                .Build();
 
-            // Bind to Config class
-            configRoot.Bind(this);
-                
-            Settings = configRoot.GetRequiredSection("ApplicationSettings").Get<ApplicationSettings>();
-            if (Settings == null)
-                logger.Error("Could not get read 'Settings' key from appsettings.json file");
-        }
-        catch (Exception e)
+        if (settings == null)
         {
-            logger.Error(e, e.Message);
+            logger.Error($"Could not read embedded file {AppSettingsJsonPath}");
+            throw new FileNotFoundException(AppSettingsJsonPath);
         }
+
+        // Add appsettings.json file
+        var configRoot = new ConfigurationBuilder()
+            .AddJsonStream(settings)
+            .Build();
+
+        // Bind to Config class
+        configRoot.Bind(this);
+
+        var appSettings = configRoot.GetRequiredSection("ApplicationSettings").Get<ApplicationSettings>();
+        if (appSettings == null)
+            throw new($"Could not read 'Settings' key from {AppSettingsJsonPath}");
+
+        Settings = appSettings;
     }
-    
+
 }

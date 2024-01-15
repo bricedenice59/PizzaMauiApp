@@ -1,11 +1,8 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using PizzaMauiApp.Pages;
+﻿using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels;
 using Serilog;
 using Serilog.Events;
-using ILogger = Serilog.ILogger;
 
 namespace PizzaMauiApp;
 public static class MauiProgram
@@ -33,7 +30,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ICartService, CartService>();
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IToastService, ToastService>();
-        builder.Services.AddSingleton<IRequestAPIService, RequestAPIService>();
+        builder.Services.AddSingleton<IRequestApiService, RequestApiService>();
         
         builder.Services.AddLogging(
             configure =>

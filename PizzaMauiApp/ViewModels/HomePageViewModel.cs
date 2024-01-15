@@ -7,18 +7,24 @@ namespace PizzaMauiApp.ViewModels;
 public partial class HomePageViewModel : ViewModelBase
 {
     #region Fields
+    private readonly ILogger _logger;
+
     private readonly INavigationService _navigationService;
     private readonly IPizzaService _pizzaService;
+
     #endregion
     
     #region Ctor
 
     public HomePageViewModel(
+        ILogger logger,
         INavigationService navigationService,
         IPizzaService pizzaService)
     {
+        _logger = logger;
         _navigationService = navigationService;
         _pizzaService = pizzaService;
+
     }
     #endregion
     
@@ -63,12 +69,12 @@ public partial class HomePageViewModel : ViewModelBase
     public override async Task ExecuteOnViewModelInit()
     {
         IsLoading = true;
-        await _pizzaService.GetAll();
-        var populars = await _pizzaService.GetPopular();
-        foreach (var popularPizza in populars)
-        {
-            PopularPizzas.Add(popularPizza);
-        }
+        var allPizzas = await _pizzaService.GetAll();
+        // var populars = await _pizzaService.GetPopular();
+        // foreach (var popularPizza in populars)
+        // {
+        //     PopularPizzas.Add(popularPizza);
+        // }
         
         IsLoading = false;
     }
