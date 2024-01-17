@@ -66,6 +66,18 @@
       <MauiXaml Update="Controls\StarButton.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="Pages\AuthenticationFlowViews\LoginPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Pages\AuthenticationFlowViews\SignupPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Controls\PasswordBox.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Controls\EntryWithIconControl.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -75,6 +87,22 @@
       </Compile>
       <Compile Update="Controls\StarButton.xaml.cs">
         <DependentUpon>StarButton.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Pages\AuthenticationFlowViews\LoginPage.xaml.cs">
+        <DependentUpon>LoginPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Pages\AuthenticationFlowViews\SignupPage.xaml.cs">
+        <DependentUpon>SignupPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Controls\PasswordBox.xaml.cs">
+        <DependentUpon>PasswordBox.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Controls\EntryWithIconControl.xaml.cs">
+        <DependentUpon>EntryWithIconControl.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

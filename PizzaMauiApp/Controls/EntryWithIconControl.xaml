@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PizzaMauiApp.Controls.EntryWithIconControl"
+             x:Name="this">
+        <Border BindingContext="{x:Reference this}" StrokeThickness="0">
+            <Grid ColumnDefinitions="Auto, *">
+                <Image Grid.Column="0"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"
+                        HeightRequest="{Binding IconHeight}"
+                        WidthRequest="{Binding IconWidth}"
+                        Source="{Binding IconSource}">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{Binding BackgroundColor}"/>
+                    </Image.Behaviors>
+                </Image>
+                <Entry
+                       Grid.Column="1"
+                       Margin="5,0,10,0"
+                       FontSize="18"
+                       Placeholder="{Binding Placeholder}"
+                       Text="{Binding Text}"/>
+            </Grid>
+        </Border>
+</Border>

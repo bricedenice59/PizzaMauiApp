@@ -1,69 +1,171 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PizzaMauiApp.ViewModels"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              x:Class="PizzaMauiApp.Pages.MainPage"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="DarkGoldenrod">
+             BackgroundColor="DarkGoldenrod"
+             x:DataType="vm:MainPageViewModel">
     
-       <Grid 
-       RowDefinitions="Auto, *, Auto" 
-       ColumnDefinitions="Auto, *, Auto"
-       Padding="15,25">
-   
-    <Label
-           Grid.Row="0"
-           Grid.Column="1"
-           FontAttributes="Bold" 
-           FontSize="40"
-           VerticalTextAlignment="Center" 
-           HorizontalOptions="Center"
-           Text="Pizza World"/>
+       <StackLayout Orientation="Vertical"
+                    Spacing="15">
+                     <Label 
+                         FontAttributes="Bold" 
+                         FontSize="40"
+                         VerticalTextAlignment="Center" 
+                         HorizontalOptions="Center"
+                         Text="Pizza World"/>
     
-    <Image
-           Grid.Row="1"
-           Grid.Column="1"
-           HeightRequest="350"
-           WidthRequest="350"
-           Source="pizzamenu.png"/>
-    
-    <VerticalStackLayout 
-           Grid.Row="2" 
-           Grid.ColumnSpan="3" 
-           Spacing="20">
-        <Label FontAttributes="Bold" 
-               FontSize="30"
-               VerticalTextAlignment="Center" 
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"
-               Text="The taste of the best pizza!"/>
-        <Label FontAttributes="Bold" 
-               FontSize="18" 
-               LineHeight="1.2"
-               VerticalTextAlignment="Center" 
-               HorizontalOptions="Center"
-               Text="Feel the taste of mouth watering pizza of its origin country"/>
-        <Border StrokeThickness="0"
-                StrokeShape="RoundRectangle 25"
-                BackgroundColor="Goldenrod"
-                HeightRequest="50"
-                Margin="0,10,0,0">
-               <Border.GestureRecognizers>
-                      <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
-               </Border.GestureRecognizers>
-               <HorizontalStackLayout
-                      HorizontalOptions="Center">
-                      <Label FontAttributes="Bold" 
-                             FontSize="25"
-                             HorizontalTextAlignment="Center"
-                             VerticalOptions="Center"
-                             Text="Get started"/>
-                      <Image Margin="10,0,0,0"
-                             VerticalOptions="Center"
-                             Source="arrow_right.png"/>
-               </HorizontalStackLayout>
-        </Border>
-    </VerticalStackLayout>
-</Grid>
+                  <Image 
+                         HeightRequest="200"
+                         WidthRequest="200"
+                         Source="pizzamenu.png"/>
+                  
+                  <Label 
+                         FontAttributes="Bold" 
+                         FontSize="30"
+                         VerticalTextAlignment="Center" 
+                         HorizontalOptions="Center"
+                         HorizontalTextAlignment="Center"
+                         LineBreakMode="WordWrap"
+                         Text="The taste of the best pizza!"/>
+                  
+                  <Border 
+                           StrokeThickness="1"
+                           Stroke="Black"
+                           StrokeShape="RoundRectangle 25"
+                           VerticalOptions="Fill"
+                           Margin="10,20,10,0"
+                           MinimumWidthRequest="300" 
+                           MaximumHeightRequest="400">
+                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
+                               Margin="5,0,5,0" RowSpacing="7">
+                                <Label Grid.Row="0"
+                                       FontAttributes="Bold" 
+                                       FontSize="21" 
+                                       VerticalTextAlignment="Center" 
+                                       HorizontalOptions="Center">
+                                       <Label.Style>
+                                              <Style TargetType="Label">
+                                                     <Style.Triggers>
+                                                            <DataTrigger TargetType="Label" 
+                                                                         Binding="{Binding IsLoginVisible}" Value="True" >
+                                                                   <Setter Property="Text" Value="Login"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" 
+                                                                         Binding="{Binding IsLoginVisible}" Value="False" >
+                                                                   <Setter Property="Text" Value="Signup"/>
+                                                            </DataTrigger> 
+                                                     </Style.Triggers>
+                                              </Style>
+                                       </Label.Style>
+                                </Label>
+
+                                <Label Grid.Row="1"
+                                       FontAttributes="Bold" 
+                                       FontSize="15" 
+                                       VerticalOptions="Start"
+                                       Text="E-mail address"/>
+                                <controls:EntryWithIconControl
+                                       Grid.Row="2"
+                                       Padding="5"
+                                       StrokeThickness="2"
+                                       Stroke="Goldenrod"
+                                       StrokeShape="RoundRectangle 10"
+                                       BackgroundColor="WhiteSmoke"
+                                       VerticalOptions="Start"
+                                       Placeholder="User e-mail"
+                                       Text="{Binding Username, Mode=TwoWay}"
+                                       IconSource="user"
+                                       IconHeight="25"
+                                       IconWidth="25"/>
+                                <Label Grid.Row="3"
+                                       FontAttributes="Bold" 
+                                       FontSize="15" 
+                                       VerticalOptions="Start"
+                                       Text="Password"/>
+                                <controls:PasswordBox Grid.Row="4"
+                                        Padding="5"
+                                        StrokeThickness="2"
+                                        Stroke="Goldenrod"
+                                        StrokeShape="RoundRectangle 10"
+                                        BackgroundColor="WhiteSmoke"
+                                        VerticalOptions="Start"
+                                        Password="{Binding Password ,Mode=TwoWay}">
+                                </controls:PasswordBox>
+                                <Border Grid.Row="5"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 25"
+                                        BackgroundColor="Goldenrod"
+                                        HeightRequest="50"
+                                        Margin="0,20,0,0">
+                                       <Border.GestureRecognizers>
+                                              <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
+                                       </Border.GestureRecognizers>
+                                       <HorizontalStackLayout
+                                              HorizontalOptions="Center">
+                                              <Label FontAttributes="Bold" 
+                                                     FontSize="25"
+                                                     HorizontalTextAlignment="Center"
+                                                     VerticalOptions="Center">
+                                                     <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                 <DataTrigger TargetType="Label" 
+                                                                              Binding="{Binding IsLoginVisible}" Value="True" >
+                                                                        <Setter Property="Text" Value="Login"/>
+                                                                 </DataTrigger>
+                                                                   <DataTrigger TargetType="Label" 
+                                                                          Binding="{Binding IsLoginVisible}" Value="False" >
+                                                                          <Setter Property="Text" Value="Signup"/>
+                                                                   </DataTrigger> 
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                     </Label.Style>
+                                              </Label>
+                                              <Image Margin="10,0,0,0"
+                                                     VerticalOptions="Center"
+                                                     Source="arrow_right.png"/>
+                                       </HorizontalStackLayout>
+                                </Border>
+                                <BoxView Margin="5,20,5,0" Grid.Row="6" HeightRequest="1" Color="Black"/>
+
+                                <HorizontalStackLayout Grid.Row="7" 
+                                                       HorizontalOptions="Center"
+                                                       Margin="0,20,0,0"
+                                                       IsVisible="{Binding IsLoginVisible}">
+                                       <Label 
+                                              Text="Don't have an account?"/>
+                                       <Label Margin="15,-3,0,0"
+                                              TextColor="Blue"
+                                              TextDecorations="Underline"
+                                              FontSize="18"
+                                              Text="Sign up">
+                                                 <Label.GestureRecognizers>
+                                                     <TapGestureRecognizer Command="{Binding ShowSignupCommand}" />
+                                                 </Label.GestureRecognizers>
+                                       </Label>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Grid.Row="7" 
+                                                       HorizontalOptions="Center"
+                                                       Margin="0,20,0,0"
+                                                       IsVisible="{Binding IsLoginVisible, Converter={StaticResource Bool2VisibilityHiddenConverter}}">
+                                       <Label 
+                                              Text="Have an account?"/>
+                                       <Label Margin="20,-3,0,0"
+                                              TextColor="Blue"
+                                              TextDecorations="Underline"
+                                              FontSize="18"
+                                              Text="Sign in">
+                                              <Label.GestureRecognizers>
+                                                     <TapGestureRecognizer Command="{Binding ShowLoginCommand}" />
+                                              </Label.GestureRecognizers>
+                                       </Label>
+                                </HorizontalStackLayout>
+                         </Grid>
+                  </Border>
+       </StackLayout>
+
 
 </ContentPage>

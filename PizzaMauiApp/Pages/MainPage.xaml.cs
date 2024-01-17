@@ -9,5 +9,13 @@ public partial class MainPage : ContentPage
     {
         BindingContext = diService.ResolveViewModel<MainPageViewModel>();
         InitializeComponent();
+        Appearing+= OnAppearing;
+    }
+    
+    private async void OnAppearing(object? sender, EventArgs e)
+    {
+        var vm = BindingContext as MainPageViewModel;
+        if (await vm!.IsAuthenticated())
+            await vm.GetStartedCommand.ExecuteAsync(null);
     }
 }
