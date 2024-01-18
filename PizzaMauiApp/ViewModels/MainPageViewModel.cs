@@ -1,3 +1,5 @@
+using PizzaMauiApp.Helpers.ValidationRules;
+using PizzaMauiApp.Models;
 using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 
@@ -10,13 +12,13 @@ public partial class MainPageViewModel : ViewModelBase
     #endregion
     
     #region Properties
+
+    [ObservableProperty] 
+    private User _user;
     
     [ObservableProperty]
     private bool _isLoginVisible;
-    [ObservableProperty]
-    private string? _username;
-    [ObservableProperty]
-    private string? _password;
+    
     #endregion
     
     #region Ctor
@@ -25,37 +27,64 @@ public partial class MainPageViewModel : ViewModelBase
         INavigationService navigationService)
     {
         _navigationService = navigationService;
+        User = new User();
+        AddValidations();
     }
     #endregion
     
     #region Commands
     [RelayCommand]
-    private async Task OnGetStarted()
+    private async Task OnLoginOrSignup()
     {
-        await _navigationService.NavigateToPage<HomePage>();
+        var isEmailValid = User.Email.Validate();
+        var isPasswordValid = User.Password.Validate();
+        if(isEmailValid && isPasswordValid)
+            await _navigationService.NavigateToPage<HomePage>();
     }
     [RelayCommand]
     private void OnGoRegisterOrLogin()
     {
         IsLoginVisible = false;
-        Username = string.Empty;
-        Password = string.Empty;
+        User.ResetValues();
     }
     [RelayCommand]
     private void OnShowLogin()
     {
         IsLoginVisible = true;
-        Username = string.Empty;
-        Password = string.Empty;
+        User.ResetValues();
     }
     [RelayCommand]
     private void OnShowSignup()
     {
         IsLoginVisible = false;
+        User.ResetValues();
+    }
+    [RelayCommand]
+    private void OnValidatePassword()
+    {
+        User.Password.Validate();
+    }
+    [RelayCommand]
+    private void OnValidateEmail()
+    {
+        User.Email.Validate();
     }
     #endregion
 
     #region Methods
+    
+    private void AddValidations()
+    {
+        User.Email.Validations.Add(new EmailRule<string> 
+        { 
+            ValidationMessage = "Email is not valid" 
+        });
+
+        User.Password.Validations.Add(new PasswordRule<string>
+        { 
+            ValidationMessage = "Password must have 1 Uppercase, 1 Lowercase, 1 number, 1 non alphanumeric and at least 10 characters." 
+        });
+    }
     
     public async Task<bool> IsAuthenticated()
     {

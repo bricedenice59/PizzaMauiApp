@@ -3,8 +3,10 @@
 <Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:b="clr-namespace:PizzaMauiApp.Behaviors"
              x:Class="PizzaMauiApp.Controls.EntryWithIconControl"
              x:Name="this">
+
         <Border BindingContext="{x:Reference this}" StrokeThickness="0">
             <Grid ColumnDefinitions="Auto, *">
                 <Image Grid.Column="0"
@@ -22,7 +24,23 @@
                        Margin="5,0,10,0"
                        FontSize="18"
                        Placeholder="{Binding Placeholder}"
-                       Text="{Binding Text}"/>
+                       b:EntryLostFocusBehavior.Text="{Binding Text}"
+                       b:EntryLostFocusBehavior.LostFocusCommand="{Binding UnfocusedCommand}"
+                       Text="{Binding Text}">
+                    <Entry.Behaviors>
+                        <b:EntryLostFocusBehavior />
+                    </Entry.Behaviors>
+                </Entry>
             </Grid>
         </Border>
+    <Border.Triggers>
+        <DataTrigger 
+            TargetType="Border"
+            Binding="{Binding IsValid, Source={x:Reference this}}"
+            Value="False">
+            <Setter TargetName="this" Property="StrokeThickness" Value="4" />
+            <Setter TargetName="this" Property="Stroke" Value="Red" />
+            <Setter TargetName="this" Property="BackgroundColor" Value="Peru" />
+        </DataTrigger>
+    </Border.Triggers>
 </Border>

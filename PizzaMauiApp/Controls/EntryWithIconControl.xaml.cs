@@ -1,3 +1,5 @@
+using System.Windows.Input;
+
 namespace PizzaMauiApp.Controls;
 
 public partial class EntryWithIconControl
@@ -17,6 +19,13 @@ public partial class EntryWithIconControl
     public static readonly BindableProperty IconWidthProperty =
         BindableProperty.Create(nameof(IconWidth), typeof(double), typeof(PasswordBox), 0.0);
 
+    public static readonly BindableProperty UnfocusedCommandProperty =
+        BindableProperty.Create(nameof(UnfocusedCommand), typeof(ICommand), typeof(PasswordBox), null);
+    
+    public static readonly BindableProperty IsValidProperty =
+        BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(PasswordBox), false);
+
+    
     public string? Text
     {
         get => (string?)GetValue(TextProperty);
@@ -45,6 +54,18 @@ public partial class EntryWithIconControl
     {
         get => (double)GetValue(IconWidthProperty);
         set => SetValue(IconWidthProperty, value);
+    }
+    
+    public ICommand? UnfocusedCommand
+    {
+        get => (ICommand?)GetValue(UnfocusedCommandProperty);
+        set => SetValue(UnfocusedCommandProperty, value);
+    }
+    
+    public bool IsValid
+    {
+        get => (bool)GetValue(IsValidProperty);
+        set => SetValue(IsValidProperty, value);
     }
     
     public EntryWithIconControl()

@@ -16,6 +16,6 @@ public partial class MainPage : ContentPage
     {
         var vm = BindingContext as MainPageViewModel;
         if (await vm!.IsAuthenticated())
-            await vm.GetStartedCommand.ExecuteAsync(null);
+            await vm.LoginOrSignupCommand.ExecuteAsync(null);
     }
 }

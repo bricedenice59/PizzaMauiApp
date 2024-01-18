@@ -36,9 +36,7 @@
                            Stroke="Black"
                            StrokeShape="RoundRectangle 25"
                            VerticalOptions="Fill"
-                           Margin="10,20,10,0"
-                           MinimumWidthRequest="300" 
-                           MaximumHeightRequest="400">
+                           Margin="10,20,10,0">
                          <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
                                Margin="5,0,5,0" RowSpacing="7">
                                 <Label Grid.Row="0"
@@ -67,33 +65,47 @@
                                        FontSize="15" 
                                        VerticalOptions="Start"
                                        Text="E-mail address"/>
-                                <controls:EntryWithIconControl
-                                       Grid.Row="2"
-                                       Padding="5"
-                                       StrokeThickness="2"
-                                       Stroke="Goldenrod"
-                                       StrokeShape="RoundRectangle 10"
-                                       BackgroundColor="WhiteSmoke"
-                                       VerticalOptions="Start"
-                                       Placeholder="User e-mail"
-                                       Text="{Binding Username, Mode=TwoWay}"
-                                       IconSource="user"
-                                       IconHeight="25"
-                                       IconWidth="25"/>
+                                <VerticalStackLayout Grid.Row="2" Padding="5">
+                                       <controls:EntryWithIconControl
+                                              StrokeThickness="2"
+                                              Stroke="Goldenrod"
+                                              StrokeShape="RoundRectangle 10"
+                                              BackgroundColor="WhiteSmoke"
+                                              VerticalOptions="Start"
+                                              Placeholder="User e-mail"
+                                              Text="{Binding User.Email.Value, Mode=TwoWay}"
+                                              UnfocusedCommand="{Binding ValidateEmailCommand}"
+                                              IsValid="{Binding User.Email.IsValid, FallbackValue=false}"
+                                              IconSource="user"
+                                              IconHeight="25"
+                                              IconWidth="25"/>
+                                       <Label 
+                                              Text="{Binding User.Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                                              FontSize="15"
+                                              LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
                                 <Label Grid.Row="3"
                                        FontAttributes="Bold" 
                                        FontSize="15" 
                                        VerticalOptions="Start"
                                        Text="Password"/>
-                                <controls:PasswordBox Grid.Row="4"
-                                        Padding="5"
-                                        StrokeThickness="2"
-                                        Stroke="Goldenrod"
-                                        StrokeShape="RoundRectangle 10"
-                                        BackgroundColor="WhiteSmoke"
-                                        VerticalOptions="Start"
-                                        Password="{Binding Password ,Mode=TwoWay}">
-                                </controls:PasswordBox>
+                                <VerticalStackLayout Grid.Row="4" Padding="5">
+                                       <controls:PasswordBox 
+                                              StrokeThickness="2"
+                                              Stroke="Goldenrod"
+                                              StrokeShape="RoundRectangle 10"
+                                              BackgroundColor="WhiteSmoke"
+                                              VerticalOptions="Start"
+                                              Password="{Binding User.Password.Value ,Mode=TwoWay}"
+                                              UnfocusedCommand="{Binding ValidatePasswordCommand}"
+                                              IsValid="{Binding User.Password.IsValid, FallbackValue=false}">
+                                       </controls:PasswordBox>
+                                       <Label
+                                              Text="{Binding User.Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                                              FontSize="15"
+                                              LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
+
                                 <Border Grid.Row="5"
                                         StrokeThickness="0"
                                         StrokeShape="RoundRectangle 25"
@@ -101,7 +113,7 @@
                                         HeightRequest="50"
                                         Margin="0,20,0,0">
                                        <Border.GestureRecognizers>
-                                              <TapGestureRecognizer Command="{Binding GetStartedCommand}"/>
+                                              <TapGestureRecognizer Command="{Binding LoginOrSignupCommand}"/>
                                        </Border.GestureRecognizers>
                                        <HorizontalStackLayout
                                               HorizontalOptions="Center">

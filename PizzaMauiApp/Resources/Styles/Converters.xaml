@@ -7,4 +7,5 @@
     <converters:VisibilityConverter x:Key="InverseBool2VisibilityConverter" WhenFalse="Visible" WhenTrue="Collapsed"/>
     <converters:VisibilityConverter x:Key="Bool2VisibilityHiddenConverter" WhenFalse="Hidden" WhenTrue="Visible"/>
     <converters:VisibilityConverter x:Key="InverseBool2VisibilityHiddenConverter" WhenFalse="Visible" WhenTrue="Hidden"/>
+    <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
 </ResourceDictionary>
