@@ -99,7 +99,9 @@ public partial class HomePageViewModel : ViewModelBase
 
     private async Task FetchDataAndPopulate()
     {
-        var populars = await _pizzaService.GetPopular();
+        IEnumerable<Pizza>? populars = await _pizzaService.GetPopular();
+        if (populars == null) return;
+        
         foreach (var popularPizza in populars)
         {
             PopularPizzas.Add(popularPizza);

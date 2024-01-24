@@ -8,5 +8,10 @@ public class ApplicationSettings
     {
         public string EndpointUrl { get; set; } = null!;
         public string GetAllEndpointName { get; set; } = null!;
+        
+        public string LoginEndpointName { get; set; } = null!;
+        
+        public string RegisterEndpointName { get; set; } = null!;
+
     }
 }

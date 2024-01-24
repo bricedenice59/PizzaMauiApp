@@ -54,6 +54,7 @@
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
+        <PackageReference Include="PizzaMauiApp.API.Dtos" Version="0.1.0" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -110,6 +111,9 @@
     <ItemGroup>
       <None Remove="appsettings.json" />
       <EmbeddedResource Include="appsettings.json" />
+      <None Update="Platforms\Android\Resources\xml\colors.xml">
+        <SubType>Designer</SubType>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

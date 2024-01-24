@@ -73,14 +73,14 @@
                                               BackgroundColor="WhiteSmoke"
                                               VerticalOptions="Start"
                                               Placeholder="User e-mail"
-                                              Text="{Binding User.Email.Value, Mode=TwoWay}"
+                                              Text="{Binding UserModel.Email.Value, Mode=TwoWay}"
                                               UnfocusedCommand="{Binding ValidateEmailCommand}"
-                                              IsValid="{Binding User.Email.IsValid, FallbackValue=false}"
+                                              IsValid="{Binding UserModel.Email.IsValid, FallbackValue=false}"
                                               IconSource="user"
                                               IconHeight="25"
                                               IconWidth="25"/>
                                        <Label 
-                                              Text="{Binding User.Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                                              Text="{Binding UserModel.Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                                               FontSize="15"
                                               LineBreakMode="WordWrap"/>
                                 </VerticalStackLayout>
@@ -96,12 +96,12 @@
                                               StrokeShape="RoundRectangle 10"
                                               BackgroundColor="WhiteSmoke"
                                               VerticalOptions="Start"
-                                              Password="{Binding User.Password.Value ,Mode=TwoWay}"
+                                              Password="{Binding UserModel.Password.Value ,Mode=TwoWay}"
                                               UnfocusedCommand="{Binding ValidatePasswordCommand}"
-                                              IsValid="{Binding User.Password.IsValid, FallbackValue=false}">
+                                              IsValid="{Binding UserModel.Password.IsValid, FallbackValue=false}">
                                        </controls:PasswordBox>
                                        <Label
-                                              Text="{Binding User.Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                                              Text="{Binding UserModel.Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                                               FontSize="15"
                                               LineBreakMode="WordWrap"/>
                                 </VerticalStackLayout>

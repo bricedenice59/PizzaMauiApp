@@ -30,6 +30,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ICartService, CartService>();
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IToastService, ToastService>();
+        builder.Services.AddSingleton<ILoginSignupService, LoginSignupService>();
         builder.Services.AddSingleton<IRequestApiService, RequestApiService>();
         builder.Services.AddSingleton<IAppSettings, AppSettings>();
         

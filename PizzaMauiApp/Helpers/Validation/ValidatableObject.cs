@@ -28,6 +28,7 @@ public class ValidatableObject<T> : ObservableObject
     {
         _isValid = true;
         _errors = Enumerable.Empty<string>();
+        _value = default;
     }
     public bool Validate()
     {

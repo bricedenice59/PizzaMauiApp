@@ -42,13 +42,14 @@ public partial class AllItemsViewModel : ViewModelBase
         HasNoResult = false;
         IsLoading = true;
         
-        await _pizzaService.GetAll();
         var allPizzas = await _pizzaService.GetAll();
+        if (allPizzas == null)
+            return;
         foreach (var pizzaItem in allPizzas)
         {
             AllItems.Add(pizzaItem);
         }
-        
+
         IsLoading = false;
     }
 
@@ -71,9 +72,12 @@ public partial class AllItemsViewModel : ViewModelBase
         IsLoading = true;
         
         var items = await _pizzaService.Lookup(keyword);
-        foreach (var item in items)
+        if (items != null)
         {
-            AllItems.Add(item);
+            foreach (var item in items)
+            {
+                AllItems.Add(item);
+            } 
         }
 
         IsLoading = false;
