@@ -1,3 +1,4 @@
+using PizzaMauiApp.API.Dtos;
 using PizzaMauiApp.Helpers.API;
 using PizzaMauiApp.Models;
 namespace PizzaMauiApp.Services;
@@ -41,12 +42,22 @@ public class PizzaService : IPizzaService
         string endPoint = _appSettings.Settings.WebAPI.EndpointUrl + _appSettings.Settings.WebAPI.GetAllEndpointName;
         _logger.Information($"Request API {endPoint}");
         
-        var apiResponse = await _requestApiService.Get<ApiResponse<IEnumerable<Pizza>>>(endPoint, cancellationToken);
-        if (apiResponse != null && !apiResponse.Success) 
-            return new List<Pizza>();
-        
-        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>?>(AllPizzas, apiResponse?.Data));
-        return apiResponse?.Data;
+        var pizzas = await _requestApiService.Get<IEnumerable<PizzaProductDto>>(endPoint, cancellationToken);
+        if (pizzas == null ) 
+            return null;
+
+        List<Pizza> lstPizza = [];
+        lstPizza.AddRange(pizzas.Select(pizzaProduct => new Pizza
+        {
+            Id = new Guid(pizzaProduct.Id),
+            Name = pizzaProduct.Name,
+            Description = pizzaProduct.Description,
+            Ingredients = pizzaProduct.Ingredients,
+            MainImageUrl = pizzaProduct.MainImageUrl,
+            PriceWithExcludedVAT = pizzaProduct.PriceWithExcludedVAT
+        }));
+        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>?>(AllPizzas, lstPizza));
+        return lstPizza;
     }
 
     public async Task<IEnumerable<Pizza>?> Lookup(string key)
