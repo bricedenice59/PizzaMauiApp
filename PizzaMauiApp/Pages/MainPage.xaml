@@ -3,13 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PizzaMauiApp.ViewModels"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PizzaMauiApp.Pages.MainPage"
              Shell.NavBarIsVisible="False"
              BackgroundColor="DarkGoldenrod"
              x:DataType="vm:MainPageViewModel">
-    
-       <StackLayout Orientation="Vertical"
-                    Spacing="15">
+       
+       <Grid>
+              <StackLayout Orientation="Vertical"
+                    Spacing="10">
                      <Label 
                          FontAttributes="Bold" 
                          FontSize="40"
@@ -18,8 +20,8 @@
                          Text="Pizza World"/>
     
                   <Image 
-                         HeightRequest="200"
-                         WidthRequest="200"
+                         HeightRequest="175"
+                         WidthRequest="175"
                          Source="pizzamenu.png"/>
                   
                   <Label 
@@ -30,15 +32,17 @@
                          HorizontalTextAlignment="Center"
                          LineBreakMode="WordWrap"
                          Text="The taste of the best pizza!"/>
-                  
-                  <Border 
+                 
+              <Grid>
+                     <Border
                            StrokeThickness="1"
                            Stroke="Black"
                            StrokeShape="RoundRectangle 25"
                            VerticalOptions="Fill"
-                           Margin="10,20,10,0">
-                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
-                               Margin="5,0,5,0" RowSpacing="7">
+                           Margin="10,20,10,0"
+                           >
+                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, 50" 
+                               Margin="5,0,5,0" RowSpacing="5" MaximumHeightRequest="450">
                                 <Label Grid.Row="0"
                                        FontAttributes="Bold" 
                                        FontSize="21" 
@@ -145,7 +149,7 @@
 
                                 <HorizontalStackLayout Grid.Row="7" 
                                                        HorizontalOptions="Center"
-                                                       Margin="0,20,0,0"
+                                                       Margin="0,15,0,0"
                                                        IsVisible="{Binding IsLoginVisible}">
                                        <Label 
                                               Text="Don't have an account?"/>
@@ -161,7 +165,7 @@
                                 </HorizontalStackLayout>
                                 <HorizontalStackLayout Grid.Row="7" 
                                                        HorizontalOptions="Center"
-                                                       Margin="0,20,0,0"
+                                                       Margin="0,15,0,0"
                                                        IsVisible="{Binding IsLoginVisible, Converter={StaticResource Bool2VisibilityHiddenConverter}}">
                                        <Label 
                                               Text="Have an account?"/>
@@ -177,7 +181,71 @@
                                 </HorizontalStackLayout>
                          </Grid>
                   </Border>
+                     <Border
+                            Opacity="0.95"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Margin="10,20,10,0"
+                            StrokeThickness="1"
+                            Stroke="Black"
+                            StrokeShape="RoundRectangle 25"
+                            BackgroundColor="Goldenrod"
+                            IsVisible="{Binding IsProcessing}">
+                         <Grid>
+                                <VerticalStackLayout Spacing="20">
+                                       <ActivityIndicator
+                                              Margin="0,30,0,0"
+                                              IsRunning="{Binding IsProcessing}"
+                                              IsVisible="{Binding LoginOrSignupFailed, Converter={StaticResource Bool2VisibilityHiddenConverter}}"
+                                              Color="Black"
+                                              HorizontalOptions="Center"/>
+                                       
+                                       <Label
+                                              HorizontalOptions="Center"
+                                              VerticalOptions="Center"
+                                              FontSize="18"
+                                              FontAttributes="Bold"
+                                              IsVisible="{Binding LoginOrSignupFailed, Converter={StaticResource Bool2VisibilityHiddenConverter}}">
+                                              <Label.Style>
+                                                     <Style TargetType="Label">
+                                                            <Style.Triggers>
+                                                                   <DataTrigger TargetType="Label" 
+                                                                          Binding="{Binding IsLoginVisible}" Value="True" >
+                                                                          <Setter Property="Text" Value="Logging in progress..."/>
+                                                                   </DataTrigger>
+                                                                   <DataTrigger TargetType="Label" 
+                                                                          Binding="{Binding IsLoginVisible}" Value="False" >
+                                                                          <Setter Property="Text" Value="Signup in progress..."/>
+                                                                   </DataTrigger> 
+                                                            </Style.Triggers>
+                                                     </Style>
+                                              </Label.Style>
+                                       </Label>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       IsVisible="{Binding LoginOrSignupFailed}">
+                                       <Image Source="warning"
+                                              WidthRequest="50"
+                                              HeightRequest="50"/>
+                                       <Label
+                                              FontSize="24"
+                                              FontAttributes="Bold"
+                                              TextColor="DarkRed"
+                                              Text="{Binding LoginOrSignupError}"
+                                              LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
+                         </Grid>   
+
+                     <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseLoginSignupFailedWarningCommand}" />
+                     </Border.GestureRecognizers>
+                         
+                         
+                     </Border>    
+              </Grid>
+
        </StackLayout>
-
-
+       </Grid>
 </ContentPage>

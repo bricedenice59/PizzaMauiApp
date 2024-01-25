@@ -11,7 +11,6 @@ public partial class MainPageViewModel : ViewModelBase
     #region Fields
     private readonly INavigationService _navigationService;
     private readonly ILoginSignupService _loginSignupService;
-    private readonly IToastService _toastService;
     #endregion
     
     #region Properties
@@ -23,18 +22,25 @@ public partial class MainPageViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isLoginVisible = true;
     
+    [ObservableProperty]
+    private bool _isProcessing;
+    
+    [ObservableProperty]
+    private bool _loginOrSignupFailed;
+    
+    [ObservableProperty]
+    private string? _loginOrSignupError;
+    
     #endregion
     
     #region Ctor
 
     public MainPageViewModel(
         INavigationService navigationService,
-        ILoginSignupService loginSignupService,
-        IToastService toastService)
+        ILoginSignupService loginSignupService)
     {
         _navigationService = navigationService;
         _loginSignupService = loginSignupService;
-        _toastService = toastService;
         UserModel = new UserModel();
         UserModel.Init(IsLoginVisible);
     }
@@ -51,6 +57,9 @@ public partial class MainPageViewModel : ViewModelBase
         {
             return;
         }
+
+        LoginOrSignupFailed = false;
+        IsProcessing = true;
         
         (bool, string?) loginOrSignupResult = new ValueTuple<bool, string?>(false, null);
         //login case
@@ -59,7 +68,8 @@ public partial class MainPageViewModel : ViewModelBase
             loginOrSignupResult = await _loginSignupService.LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
             if (!loginOrSignupResult.Item1)
             {
-                await _toastService.DisplayToast("Login failed. Please check your credentials and try again.");
+                LoginOrSignupFailed = true;
+                LoginOrSignupError = "Login failed. Please check your credentials and try again.";
                 return;
             }
         }
@@ -69,7 +79,8 @@ public partial class MainPageViewModel : ViewModelBase
             loginOrSignupResult = await _loginSignupService.RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
             if (!loginOrSignupResult.Item1)
             {
-                await _toastService.DisplayToast("Signup failed. Please check your internet connection and try again.");
+                LoginOrSignupFailed = true;
+                LoginOrSignupError = "Signup failed. Please check your internet connection and try again.";
                 return;
             }
         }
@@ -77,6 +88,8 @@ public partial class MainPageViewModel : ViewModelBase
         Preferences.Set(PreferencesStorageModel.UserHasAuthenticated, true);
         Preferences.Set(PreferencesStorageModel.UserEmail, UserModel.Email.Value!);
         Preferences.Set(PreferencesStorageModel.UserToken, loginOrSignupResult.Item2!);
+
+        IsProcessing = false;
 
         await _navigationService.NavigateToPage<HomePage>();
     }
@@ -106,6 +119,13 @@ public partial class MainPageViewModel : ViewModelBase
     {
         UserModel.Email.Validate();
     }
+    
+    [RelayCommand]
+    private void OnCloseLoginSignupFailedWarning()
+    {
+       IsProcessing = false;
+    }
+    
     #endregion
 
     #region Methods
