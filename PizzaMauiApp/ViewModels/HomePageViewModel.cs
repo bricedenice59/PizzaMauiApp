@@ -87,7 +87,7 @@ public partial class HomePageViewModel : ViewModelBase
     public override async Task ExecuteOnViewModelInit()
     {
         IsLoading = true;
-
+        
         await FetchDataAndPopulate();
         
         IsLoading = false;

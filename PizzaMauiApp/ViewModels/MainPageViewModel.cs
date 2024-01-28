@@ -1,3 +1,4 @@
+using PizzaMauiApp.API.Dtos;
 using PizzaMauiApp.Helpers.ValidationRules;
 using PizzaMauiApp.Models;
 using PizzaMauiApp.Pages;
@@ -10,7 +11,7 @@ public partial class MainPageViewModel : ViewModelBase
 {
     #region Fields
     private readonly INavigationService _navigationService;
-    private readonly ILoginSignupService _loginSignupService;
+    private readonly IAccountService _accountService;
     #endregion
     
     #region Properties
@@ -37,10 +38,10 @@ public partial class MainPageViewModel : ViewModelBase
 
     public MainPageViewModel(
         INavigationService navigationService,
-        ILoginSignupService loginSignupService)
+        IAccountService accountService)
     {
         _navigationService = navigationService;
-        _loginSignupService = loginSignupService;
+        _accountService = accountService;
         UserModel = new UserModel();
         UserModel.Init(IsLoginVisible);
     }
@@ -61,11 +62,11 @@ public partial class MainPageViewModel : ViewModelBase
         LoginOrSignupFailed = false;
         IsProcessing = true;
         
-        (bool, string?) loginOrSignupResult = new ValueTuple<bool, string?>(false, null);
+        (bool, TokenModelDto?) loginOrSignupResult = new ValueTuple<bool, TokenModelDto?>(false, null);
         //login case
         if (IsLoginVisible)
         {
-            loginOrSignupResult = await _loginSignupService.LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
+            loginOrSignupResult = await _accountService.LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
             if (!loginOrSignupResult.Item1)
             {
                 LoginOrSignupFailed = true;
@@ -76,7 +77,7 @@ public partial class MainPageViewModel : ViewModelBase
         //signup case
         else
         { 
-            loginOrSignupResult = await _loginSignupService.RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
+            loginOrSignupResult = await _accountService.RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
             if (!loginOrSignupResult.Item1)
             {
                 LoginOrSignupFailed = true;
@@ -87,8 +88,8 @@ public partial class MainPageViewModel : ViewModelBase
         //everything's ok
         Preferences.Set(PreferencesStorageModel.UserHasAuthenticated, true);
         Preferences.Set(PreferencesStorageModel.UserEmail, UserModel.Email.Value!);
-        Preferences.Set(PreferencesStorageModel.UserToken, loginOrSignupResult.Item2!);
-
+        Preferences.Set(PreferencesStorageModel.UserToken, loginOrSignupResult.Item2?.AccessToken!);
+        Preferences.Set(PreferencesStorageModel.UserRefreshToken, loginOrSignupResult.Item2?.RefreshToken!);
         IsProcessing = false;
 
         await _navigationService.NavigateToPage<HomePage>();

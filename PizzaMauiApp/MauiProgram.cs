@@ -1,4 +1,5 @@
-﻿using PizzaMauiApp.Pages;
+﻿using PizzaMauiApp.Helpers.HttpHandler;
+using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels;
 using Serilog;
@@ -30,9 +31,11 @@ public static class MauiProgram
         builder.Services.AddSingleton<ICartService, CartService>();
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IToastService, ToastService>();
-        builder.Services.AddSingleton<ILoginSignupService, LoginSignupService>();
+        builder.Services.AddSingleton<IAccountService, AccountService>();
         builder.Services.AddSingleton<IRequestApiService, RequestApiService>();
         builder.Services.AddSingleton<IAppSettings, AppSettings>();
+        builder.Services.AddSingleton<ITokenService, TokenService>();
+        builder.Services.AddSingleton(typeof(TokenAuthHeaderHandler));
         
         builder.Services.AddLogging(
             configure =>
@@ -61,10 +64,10 @@ public static class MauiProgram
                     return errors == System.Net.Security.SslPolicyErrors.None;
                 };
                 return handler;
-            });
-        
-        return builder.Build();
+            })
+            .AddHttpMessageHandler<TokenAuthHeaderHandler>();
 #endif
+        return builder.Build();
     }
     
     private static void SetupSerilog(this IServiceCollection serviceCollection)

@@ -7,15 +7,15 @@ namespace PizzaMauiApp.Services;
 
 public interface IRequestApiService
 {
-    Task<T?> Get<T>(string endpointUrl, CancellationToken cancellationToken, TimeSpan timeout = default);
-    Task<TOut?> Post<TIn, TOut>(string endpointUrl, TIn inObject, CancellationToken cancellationToken, TimeSpan timeout = default);
+    Task<T?> Get<T>(string endpointUrl, CancellationToken cancellationToken =  new (), TimeSpan timeout = default);
+    Task<TOut?> Post<TIn, TOut>(string endpointUrl, TIn inObject, CancellationToken cancellationToken = new (), TimeSpan timeout = default);
 }
 
 public class RequestApiService : IRequestApiService
 {
     private readonly ILogger _logger;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly TimeSpan _duration = TimeSpan.FromMilliseconds(20000); //20s
+    private readonly TimeSpan _timeoutDuration = TimeSpan.FromMilliseconds(20000); //20s
     
     public RequestApiService(ILogger logger, IHttpClientFactory httpClientFactory)
     {
@@ -30,7 +30,7 @@ public class RequestApiService : IRequestApiService
 
         var tsTimeout = 
             timeout == default 
-                ? _duration 
+                ? _timeoutDuration 
                 : timeout;
         try
         {
@@ -41,7 +41,7 @@ public class RequestApiService : IRequestApiService
             // Add an Accept header for JSON format.
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-        
+
             // Get data response
             var response = await client.GetAsync(endpointUrl, cancellationToken);
             if (!response.IsSuccessStatusCode)
@@ -85,7 +85,7 @@ public class RequestApiService : IRequestApiService
 
         var tsTimeout = 
             timeout == default 
-                ? _duration 
+                ? _timeoutDuration 
                 : timeout;
         try
         {

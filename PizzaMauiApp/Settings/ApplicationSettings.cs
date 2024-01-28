@@ -12,6 +12,7 @@ public class ApplicationSettings
         public string LoginEndpointName { get; set; } = null!;
         
         public string RegisterEndpointName { get; set; } = null!;
-
+        
+        public string RefreshTokenEndpointName { get; set; } = null!;
     }
 }
