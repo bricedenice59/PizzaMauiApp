@@ -62,10 +62,6 @@ public class TokenService : ITokenService
             Preferences.Set(PreferencesStorageModel.UserToken, response!.Token);
             Preferences.Set(PreferencesStorageModel.UserRefreshToken, response!.RefreshToken);
         }
-        else
-        {
-            Console.Write("TEst");
-        }
 
         return hasSucceeded;
     }
