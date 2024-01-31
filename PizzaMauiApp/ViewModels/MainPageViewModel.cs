@@ -1,4 +1,5 @@
 using PizzaMauiApp.API.Dtos;
+using PizzaMauiApp.Helpers.Crypto;
 using PizzaMauiApp.Helpers.ValidationRules;
 using PizzaMauiApp.Models;
 using PizzaMauiApp.Pages;
@@ -86,6 +87,7 @@ public partial class MainPageViewModel : ViewModelBase
             }
         }
         //everything's ok
+        Preferences.Set(PreferencesStorageModel.UserId, Sha256.GetHashString(UserModel.Email.Value!));
         Preferences.Set(PreferencesStorageModel.UserHasAuthenticated, true);
         Preferences.Set(PreferencesStorageModel.UserEmail, UserModel.Email.Value!);
         Preferences.Set(PreferencesStorageModel.UserToken, loginOrSignupResult.Item2?.AccessToken!);

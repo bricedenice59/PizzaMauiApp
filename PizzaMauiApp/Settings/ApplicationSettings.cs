@@ -14,5 +14,7 @@ public class ApplicationSettings
         public string RegisterEndpointName { get; set; } = null!;
         
         public string RefreshTokenEndpointName { get; set; } = null!;
+        
+        public string CartEndpoint { get; set; } = null!;
     }
 }

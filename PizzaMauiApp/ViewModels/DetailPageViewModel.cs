@@ -45,10 +45,10 @@ public partial class DetailPageViewModel : ViewModelBase
     #endregion
 
     #region Overrides
-    public override Task OnNavigatingFrom(object? parameter)
+    public override async Task OnNavigatingFrom(object? parameter)
     {
-        SetQuantityOnPageChanged();
-        return base.OnNavigatingFrom(parameter);
+        await SetQuantityOnPageChanged();
+        await base.OnNavigatingFrom(parameter);
     }
 
     public override Task OnNavigatingTo(object? parameter)
@@ -58,10 +58,10 @@ public partial class DetailPageViewModel : ViewModelBase
         return base.OnNavigatingTo(parameter);
     }
 
-    public override Task ExecuteOnViewModelInit()
+    public override async Task ExecuteOnViewModelInit()
     {
-        SetQuantityOnPageChanged();
-        return base.ExecuteOnViewModelInit();
+        await SetQuantityOnPageChanged();
+        await base.ExecuteOnViewModelInit();
     }
     #endregion
     
@@ -73,25 +73,27 @@ public partial class DetailPageViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OnIncrementQuantity()
+    private async Task OnIncrementQuantity()
     {
         if (PizzaItem == null)
             return;
-
-        Quantity++;
         
-        _cartService.AddToCart(PizzaItem.Id);
+        if(await _cartService.AddOneToCart(PizzaItem.Id))
+            Quantity++;
+        else await _toastService.DisplayToast("Technical error, could not add pizza to the cart.");
     }
 
     [RelayCommand]
-    private void OnDecrementQuantity()
+    private async Task OnDecrementQuantity()
     {
         if (PizzaItem == null)
             return;
         if (Quantity >= 1)
-            Quantity--;
-        
-        _cartService.RemoveOneFromCart(PizzaItem.Id);
+        {
+            if(await _cartService.RemoveOneFromCart(PizzaItem.Id))
+                Quantity--;
+            else await _toastService.DisplayToast("Technical error, could not remove pizza from the cart.");
+        }
     }
     
     [RelayCommand]
@@ -111,10 +113,11 @@ public partial class DetailPageViewModel : ViewModelBase
     #endregion
     
     #region Methods
-    private void SetQuantityOnPageChanged()
+    private async Task SetQuantityOnPageChanged()
     {
+        var allItems = await _cartService.GetAllFromCart();
         if (PizzaItem != null &&
-            _cartService.GetCart().TryGetValue(PizzaItem.Id, out int quantity))
+            allItems.TryGetValue(PizzaItem.Id, out int quantity))
             Quantity = quantity;
         else Quantity = 0;
     }

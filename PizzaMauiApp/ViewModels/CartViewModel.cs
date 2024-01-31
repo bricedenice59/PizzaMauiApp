@@ -43,7 +43,7 @@ public partial class CartViewModel : ViewModelBase
     {
         Items.Clear();
         
-        var cartItems = _cartService.GetCart();
+        var cartItems = await _cartService.GetAllFromCart();
         foreach (var itemInCart in cartItems)
         {
             var pizzaItem = await _pizzaService.GetById(itemInCart.Key);
@@ -70,13 +70,13 @@ public partial class CartViewModel : ViewModelBase
     #region Commands
     
     [RelayCommand]
-    private void OnRemoveFromCart(Guid pizzaItemId)
+    private async Task OnRemoveFromCart(Guid pizzaItemId)
     {
         var items = Items.Where(i => i.Id == pizzaItemId).ToList();
         foreach (var item in items)
         {
-            Items.Remove(item);
-            _cartService.RemoveAllFromCart(item.Id);
+            if(await _cartService.RemoveAllFromCart(item.Id))
+                Items.Remove(item);
         }
 
         if(!Items.Any())
@@ -90,13 +90,16 @@ public partial class CartViewModel : ViewModelBase
     {
         if (await _dialogService.DisplayConfirm("Confirm clear cart?", "Do you really want to clear the cart items?","Yes", "No"))
         {
-            Items.Clear();
-            _cartService.ClearCart();
-            
-            RecalculateTotalAmount();
-            await _toastService.DisplayToast("Cart emptied!");
+            if (await _cartService.ClearCart())
+            {
+                Items.Clear();
 
-            HasItemsInCart = false;
+                RecalculateTotalAmount();
+                await _toastService.DisplayToast("Cart emptied!");
+
+                HasItemsInCart = false;
+            }
+            else await _toastService.DisplayToast("Technical error, cart could not be emptied.");
         }
     }
     
