@@ -47,22 +47,17 @@ public static class MauiProgram
 #if DEBUG
         builder.Services.AddHttpClient("customHttpClient", httpClient =>
             {
-                var baseAddress =
-                    DeviceInfo.Platform == DevicePlatform.Android
-                        ? "https://10.0.2.2:7121"
-                        : "https://localhost:7121";
-
-                httpClient.BaseAddress = new Uri(baseAddress);
+                // var baseAddress =
+                //     DeviceInfo.Platform == DevicePlatform.Android
+                //         ? "https://10.0.2.2:8081/api/"
+                //         : "https://localhost:8081/api/";
+                //
+                // httpClient.BaseAddress = new Uri(baseAddress);
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
             {
                 HttpClientHandler handler = new HttpClientHandler();
-                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
-                {
-                    if (cert != null && cert.Issuer.Equals("CN=localhost"))
-                        return true;
-                    return errors == System.Net.Security.SslPolicyErrors.None;
-                };
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
                 return handler;
             })
             .AddHttpMessageHandler<TokenAuthHeaderHandler>();
