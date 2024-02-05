@@ -79,6 +79,9 @@
       <MauiXaml Update="Controls\EntryWithIconControl.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="Controls\RatingControl.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -104,6 +107,10 @@
       </Compile>
       <Compile Update="Controls\EntryWithIconControl.xaml.cs">
         <DependentUpon>EntryWithIconControl.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Controls\RatingControl.xaml.cs">
+        <DependentUpon>RatingControl.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

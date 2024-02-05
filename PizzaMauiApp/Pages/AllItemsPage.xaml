@@ -80,8 +80,8 @@
                                                     FontSize="15"
                                                 />
                                                 <controls:StarButton
-                                                    BorderBackgroundColor="Black"
-                                                    BorderStrokeThickness="0"
+                                                    ShapeBackgroundColor="Black"
+                                                    StrokeThickness="0"
                                                     WidthRequest="17" 
                                                     HeightRequest="17"/>
                                             </HorizontalStackLayout>
