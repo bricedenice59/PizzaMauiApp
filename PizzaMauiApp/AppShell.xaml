@@ -5,12 +5,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:PizzaMauiApp.Pages"
     Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarIsVisible="False"
     Shell.BackgroundColor="DarkGoldenrod"
     Title="PizzaMauiApp">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate pages:MainPage}"
-        Route="MainPage" />
-
+    
+    <TabBar>
+        <Tab Title="Home" Icon="menu.png">
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate pages:MainPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Title="Cart" Icon="cart.png" >
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate pages:CartViewPage}"
+                Route="CartViewPage" />
+        </Tab>
+        <Tab Title="Settings" Icon="settings.png" >
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate pages:SettingsPage}"
+                Route="SettingsPage" />
+        </Tab>
+    </TabBar>
 </Shell>

@@ -54,6 +54,7 @@
         <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.6" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Maui.Controls.Core" Version="8.0.6" />
         <PackageReference Include="PizzaMauiApp.API.Dtos" Version="0.1.2" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
@@ -80,6 +81,9 @@
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Update="Controls\RatingControl.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Pages\SettingsPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
     </ItemGroup>
@@ -111,6 +115,13 @@
       </Compile>
       <Compile Update="Controls\RatingControl.xaml.cs">
         <DependentUpon>RatingControl.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Platforms\iOS\Renderers\CustomShellHandler.cs">
+        <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+      </Compile>
+      <Compile Update="Pages\SettingsPage.xaml.cs">
+        <DependentUpon>Settings.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

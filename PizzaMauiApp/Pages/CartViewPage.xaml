@@ -7,6 +7,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              x:Class="PizzaMauiApp.Pages.CartViewPage"
+             Shell.TabBarIsVisible="True"
              x:DataType="vms:CartViewModel"
              BackgroundColor="PaleGoldenrod"
              Title="Cart">

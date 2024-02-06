@@ -1,4 +1,11 @@
-﻿using PizzaMauiApp.Helpers.HttpHandler;
+﻿using System;
+using System.Net.Http;
+using MauiShellCustomization;
+using Microsoft.Extensions.DependencyInjection;
+ using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
+using PizzaMauiApp.Helpers.HttpHandler;
 using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels;
@@ -24,6 +31,7 @@ public static class MauiProgram
         builder.Services.AddTransient<AllItemsPage, AllItemsViewModel>();
         builder.Services.AddTransient<DetailPage, DetailPageViewModel>();
         builder.Services.AddTransient<CartViewPage, CartViewModel>();
+        builder.Services.AddTransient<SettingsPage, SettingsPageViewModel>();
         
         builder.Services.AddSingleton<IDIService, DIService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
@@ -62,6 +70,10 @@ public static class MauiProgram
             })
             .AddHttpMessageHandler<TokenAuthHeaderHandler>();
 #endif
+        builder.ConfigureMauiHandlers(handlers =>
+        {
+            handlers.AddHandler<Shell, CustomShellHandler>();
+        });
         return builder.Build();
     }
     

@@ -9,6 +9,7 @@
              x:DataType="vms:HomePageViewModel"
              Title="Our selection"
              Shell.NavBarIsVisible="True"
+             Shell.TabBarIsVisible="True"
              NavigationPage.HasBackButton="False"
              Padding="20">
     
