@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Components.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Converters.xaml" />
+                <ResourceDictionary Source="Resources/Styles/SharedColor.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -3,11 +3,12 @@ using CoreGraphics;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Platform.Compatibility;
+using Microsoft.Maui.Graphics.Platform;
 using UIKit;
 
-namespace MauiShellCustomization;
+namespace PizzaMauiApp.iOS.Renderers;
 
-class CustomShellHandler : ShellRenderer
+partial class CustomShellHandler : ShellRenderer
 {
     protected override IShellTabBarAppearanceTracker CreateTabBarAppearanceTracker()
 	{
@@ -49,12 +50,25 @@ public class CustomShellTabBarAppearanceTracker : IShellTabBarAppearanceTracker
         var uIBezierPath = UIBezierPath.FromRoundedRect(controller.TabBar.Bounds, UIRectCorner.AllCorners,
             new CGSize(cornerRadius, cornerRadius));
 
+        object? primaryBackgroundColorObj = null;
+        Color? backgroundColor = null;
+        if (App.Current?.Resources.TryGetValue("NavBarColor", out primaryBackgroundColorObj) == true)
+        {
+            if (primaryBackgroundColorObj != null)
+            {
+                var color = (Color)primaryBackgroundColorObj;
+                backgroundColor = Color.FromRgb(color.Red, color.Green, color.Blue);
+            }
+        }
+        
         var cAShapeLayer = new CAShapeLayer
         {
             Frame = controller.TabBar.Bounds,
             Path = uIBezierPath.CGPath,
             //DarkGoldenrod
-            FillColor = UIColor.FromRGB(184,134,11).CGColor
+            FillColor = backgroundColor != null 
+                ? backgroundColor.AsCGColor()
+                : UIColor.White.CGColor
         };
 
         controller.TabBar.Layer.AddSublayer(cAShapeLayer);

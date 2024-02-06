@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
-using MauiShellCustomization;
 using Microsoft.Extensions.DependencyInjection;
  using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Hosting;
+ using Microsoft.Maui.Controls.Handlers.Compatibility;
+ using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
 using PizzaMauiApp.Helpers.HttpHandler;
 using PizzaMauiApp.Pages;
@@ -23,7 +23,16 @@ public static class MauiProgram
         {
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-        }).UseMauiCommunityToolkit();
+        })
+        .UseMauiCommunityToolkit()
+        .ConfigureMauiHandlers(handlers =>
+        {
+#if ANDROID
+            handlers.AddHandler(typeof(Shell), typeof(PizzaMauiApp.Droid.Renderers.CustomShellHandler));
+#elif IOS
+            handlers.AddHandler(typeof(Shell), typeof(PizzaMauiApp.iOS.Renderers.CustomShellHandler));
+#endif
+        });
         
         builder.Services.SetupSerilog();
         builder.Services.AddTransient<MainPage, MainPageViewModel>();
@@ -70,11 +79,7 @@ public static class MauiProgram
             })
             .AddHttpMessageHandler<TokenAuthHeaderHandler>();
 #endif
-        builder.ConfigureMauiHandlers(handlers =>
-        {
-            handlers.AddHandler<Shell, CustomShellHandler>();
-        });
-        return builder.Build();
+            return builder.Build();
     }
     
     private static void SetupSerilog(this IServiceCollection serviceCollection)

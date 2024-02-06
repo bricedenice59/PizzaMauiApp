@@ -55,6 +55,7 @@
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.6" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Maui.Controls.Core" Version="8.0.6" />
+        <PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.6" />
         <PackageReference Include="PizzaMauiApp.API.Dtos" Version="0.1.2" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
