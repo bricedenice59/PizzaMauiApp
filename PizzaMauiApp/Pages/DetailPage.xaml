@@ -67,7 +67,7 @@
                 </VerticalStackLayout>
             </ScrollView>
             <Border StrokeThickness="0"
-                    BackgroundColor="DarkGoldenrod"
+                    BackgroundColor="{StaticResource NavBarColor}"
                     StrokeShape="{OnPlatform Android='RoundRectangle 30,30,0,0', Default='Rectangle 0'}"
                     VerticalOptions="End"
                     HeightRequest="150"
@@ -126,7 +126,7 @@
                          WidthRequest="20"
                          Command="{Binding GoBackCommand}">
                 <ImageButton.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="DarkGoldenrod"/>
+                    <toolkit:IconTintColorBehavior TintColor="{StaticResource NavBarColor}"/>
                 </ImageButton.Behaviors>
             </ImageButton>
         </Grid>

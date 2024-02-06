@@ -65,7 +65,6 @@ public class CustomShellTabBarAppearanceTracker : IShellTabBarAppearanceTracker
         {
             Frame = controller.TabBar.Bounds,
             Path = uIBezierPath.CGPath,
-            //DarkGoldenrod
             FillColor = backgroundColor != null 
                 ? backgroundColor.AsCGColor()
                 : UIColor.White.CGColor

@@ -108,7 +108,7 @@
                     Command="{Binding  NavigateHomeCommand, Source={RelativeSource AncestorType={x:Type vms:CartViewModel}}}"/>
         </VerticalStackLayout>
             <Border StrokeShape="RoundRectangle 40"
-                    BackgroundColor="DarkGoldenrod"
+                    BackgroundColor="{StaticResource NavBarColor}"
                     StrokeThickness="0"
                     VerticalOptions="End"
                     Margin="5"

@@ -7,7 +7,7 @@
              x:Class="PizzaMauiApp.Pages.MainPage"
              Shell.NavBarIsVisible="True"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="DarkGoldenrod"
+             BackgroundColor="{StaticResource NavBarColor}"
              x:DataType="vm:MainPageViewModel">
        
        <Grid>

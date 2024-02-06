@@ -22,7 +22,7 @@
                 <ActivityIndicator IsRunning="{Binding IsLoading}"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
-                                   Color="DarkGoldenrod"/>
+                                   Color="{StaticResource NavBarColor}"/>
                 <Border Padding="15"
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 10"

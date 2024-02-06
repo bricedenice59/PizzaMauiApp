@@ -6,7 +6,7 @@
     xmlns:pages="clr-namespace:PizzaMauiApp.Pages"
     Shell.FlyoutBehavior="Disabled"
     Shell.TabBarIsVisible="False"
-    Shell.BackgroundColor="DarkGoldenrod"
+    Shell.BackgroundColor="{StaticResource NavBarColor}"
     Title="PizzaMauiApp">
     
     <TabBar>

@@ -24,7 +24,7 @@
                    Placeholder="Search for pizza..."
                    PlaceholderColor="Goldenrod"
                    CancelButtonColor="Red"
-                   TextColor="DarkGoldenrod "
+                   TextColor="{StaticResource NavBarColor}"
                    ios:SearchBar.SearchBarStyle="Minimal"
                    IsReadOnly="{Binding IsLoading}">
             <SearchBar.Behaviors>
@@ -125,7 +125,7 @@
                            IsRunning="{Binding IsLoading}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
-                           Color="DarkGoldenrod"/>
+                           Color="{StaticResource NavBarColor}"/>
     </Grid>
     
 </ContentPage>
