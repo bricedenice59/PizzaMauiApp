@@ -57,6 +57,7 @@ public class CartService : ICartService
             if (pizzaItem == null) return false;
             
             pizzaItem.Quantity = 0;
+            customerBasketItemDtoResponse.Items.Remove(pizzaItem);
             return await UpdateCart(customerBasketItemDtoResponse, cancellationToken);
         }
         
