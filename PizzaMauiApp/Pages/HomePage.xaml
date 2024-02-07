@@ -5,10 +5,11 @@
              xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
              xmlns:models="clr-namespace:PizzaMauiApp.Models"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PizzaMauiApp.Pages.HomePage"
              x:DataType="vms:HomePageViewModel"
              Title="Our selection"
-             Shell.NavBarIsVisible="True"
+             Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="True"
              NavigationPage.HasBackButton="False"
              Padding="20">
@@ -16,6 +17,12 @@
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
+    
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding FetchDataCommand}" />
+    </ContentPage.Behaviors>
     
     <ScrollView>
             <VerticalStackLayout>
@@ -182,7 +189,7 @@
                     <Button Text="Reload"
                             HorizontalOptions="Center"
                             BackgroundColor= "Goldenrod"
-                            Command="{Binding  FetchDataWhenNoResultCommand}"/>
+                            Command="{Binding  FetchDataCommand}"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

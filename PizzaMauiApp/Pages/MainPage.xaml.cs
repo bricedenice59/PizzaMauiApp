@@ -5,19 +5,9 @@ namespace PizzaMauiApp.Pages;
 
 public partial class MainPage : ContentPage
 {
-    private readonly INavigationService _navigationService;
-    public MainPage(IDIService diService, INavigationService navigationService)
+    public MainPage(IDIService diService)
     {
         BindingContext = diService.ResolveViewModel<MainPageViewModel>();
-        _navigationService = navigationService;
         InitializeComponent();
-        Appearing+= OnAppearing;
-    }
-    
-    private async void OnAppearing(object? sender, EventArgs e)
-    {
-        var vm = BindingContext as MainPageViewModel;
-        if (vm!.IsAuthenticated())
-            await _navigationService.NavigateToPage<HomePage>();
     }
 }

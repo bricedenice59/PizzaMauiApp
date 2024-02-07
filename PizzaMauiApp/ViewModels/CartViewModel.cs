@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+using PizzaMauiApp.Messages;
 using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels.Models;
@@ -35,11 +37,13 @@ public partial class CartViewModel : ViewModelBase
     public ObservableCollection<CartPizzaModel> Items { get; set; } = new();
 
     [ObservableProperty] private double _totalAmount;
-    [ObservableProperty] private bool _hasItemsInCart = true;
+    [ObservableProperty] private bool _hasItemsInCart;
     #endregion
     
-    #region Overrides
-    public override async Task ExecuteOnViewModelInit()
+    #region Commands
+    
+    [RelayCommand]
+    private async Task OnFetchData()
     {
         Items.Clear();
         
@@ -65,9 +69,6 @@ public partial class CartViewModel : ViewModelBase
         
         RecalculateTotalAmount();
     }
-    #endregion
-
-    #region Commands
     
     [RelayCommand]
     private async Task OnRemoveFromCart(Guid pizzaItemId)
@@ -104,16 +105,14 @@ public partial class CartViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private async Task OnNavigateHome()
+    private void OnNavigateHome()
     {
-        await _navigationService.NavigateToPage<HomePage>();
+        WeakReferenceMessenger.Default.Send(new ShellRouteMessage(new ShellRoute
+        {
+            RouteName = nameof(HomePage)
+        }));
     }
-    
-    [RelayCommand]
-    private async Task OnNavigateBack()
-    {
-        await _navigationService.NavigateBack();
-    }
+
     #endregion
 
     #region Methods

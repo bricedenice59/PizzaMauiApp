@@ -8,7 +8,15 @@
              xmlns:models="clr-namespace:PizzaMauiApp.Models"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              x:Class="PizzaMauiApp.Pages.AllItemsPage"
+             Shell.TabBarIsVisible="True"
+             Shell.NavBarIsVisible="False"
              x:DataType="vms:AllItemsViewModel">
+    
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Loaded"
+            Command="{Binding FetchDataCommand}" />
+    </ContentPage.Behaviors>
     
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage"

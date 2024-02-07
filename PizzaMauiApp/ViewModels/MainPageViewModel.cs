@@ -1,6 +1,8 @@
+using CommunityToolkit.Mvvm.Messaging;
 using PizzaMauiApp.API.Dtos;
 using PizzaMauiApp.Helpers.Crypto;
 using PizzaMauiApp.Helpers.ValidationRules;
+using PizzaMauiApp.Messages;
 using PizzaMauiApp.Models;
 using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
@@ -94,7 +96,7 @@ public partial class MainPageViewModel : ViewModelBase
         Preferences.Set(PreferencesStorageModel.UserRefreshToken, loginOrSignupResult.Item2?.RefreshToken!);
         IsProcessing = false;
 
-        await _navigationService.NavigateToPage<HomePage>();
+        WeakReferenceMessenger.Default.Send(new HasAuthenticatedMessage(true));
     }
 
     [RelayCommand]
@@ -127,16 +129,6 @@ public partial class MainPageViewModel : ViewModelBase
     private void OnCloseLoginSignupFailedWarning()
     {
        IsProcessing = false;
-    }
-    
-    #endregion
-
-    #region Methods
-    
-    public bool IsAuthenticated()
-    {
-        var isAuthenticated = Preferences.Get(PreferencesStorageModel.UserHasAuthenticated, false);
-        return isAuthenticated;
     }
     
     #endregion

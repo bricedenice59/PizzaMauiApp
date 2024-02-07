@@ -9,12 +9,17 @@
     Shell.BackgroundColor="{StaticResource NavBarColor}"
     Title="PizzaMauiApp">
     
-    <TabBar>
+    <ShellContent x:Name="ShellContentMainPage"
+        Title="Main"
+        ContentTemplate="{DataTemplate pages:MainPage}"
+        Route="MainPage"/>
+    
+    
+    <TabBar x:Name="NavigationTabBar">
         <Tab Title="Home" Icon="menu.png">
             <ShellContent
-                Title="Home"
-                ContentTemplate="{DataTemplate pages:MainPage}"
-                Route="MainPage" />
+                ContentTemplate="{DataTemplate pages:HomePage}"
+                Route="HomePage"/>
         </Tab>
         <Tab Title="Cart" Icon="cart.png" >
             <ShellContent

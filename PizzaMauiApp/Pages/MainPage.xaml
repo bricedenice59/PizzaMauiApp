@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PizzaMauiApp.Pages.MainPage"
-             Shell.NavBarIsVisible="True"
+             Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
              BackgroundColor="{StaticResource NavBarColor}"
              x:DataType="vm:MainPageViewModel">

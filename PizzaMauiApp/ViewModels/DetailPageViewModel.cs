@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+using PizzaMauiApp.Messages;
 using PizzaMauiApp.Models;
 using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
@@ -7,7 +9,6 @@ namespace PizzaMauiApp.ViewModels;
 public partial class DetailPageViewModel : ViewModelBase
 {
     #region Fields
-    private readonly INavigationService _navigationService;
     private readonly IToastService _toastService;
     private readonly ICartService _cartService;
     #endregion
@@ -15,11 +16,9 @@ public partial class DetailPageViewModel : ViewModelBase
     #region Ctor
 
     public DetailPageViewModel(
-        INavigationService navigationService, 
         IToastService toastService,
         ICartService cartService)
     {
-        _navigationService = navigationService;
         _toastService = toastService;
         _cartService = cartService;
     }
@@ -43,11 +42,11 @@ public partial class DetailPageViewModel : ViewModelBase
         }
     }
     #endregion
-
+    
     #region Overrides
     public override async Task OnNavigatingFrom(object? parameter)
     {
-        await SetQuantityOnPageChanged();
+        await OnFetchData();
         await base.OnNavigatingFrom(parameter);
     }
 
@@ -60,16 +59,20 @@ public partial class DetailPageViewModel : ViewModelBase
 
     public override async Task ExecuteOnViewModelInit()
     {
-        await SetQuantityOnPageChanged();
+        await OnFetchData();
         await base.ExecuteOnViewModelInit();
     }
     #endregion
     
     #region Commands
+    
     [RelayCommand]
-    private async Task OnGoBack()
+    private void OnGoBack()
     {
-        await _navigationService.NavigateBack();
+        WeakReferenceMessenger.Default.Send(new ShellRouteMessage(new ShellRoute
+        {
+            RouteName = nameof(HomePage)
+        }));
     }
 
     [RelayCommand]
@@ -97,23 +100,7 @@ public partial class DetailPageViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private async Task OnViewCart()
-    {
-        if (PizzaItem == null)
-            return;
-
-        if(Quantity == 0)
-        {
-            await _toastService.DisplayToast("Please select a quantity more than 0");
-            return;
-        }
-
-        await _navigationService.NavigateToPage<CartViewPage>();
-    }
-    #endregion
-    
-    #region Methods
-    private async Task SetQuantityOnPageChanged()
+    private async Task OnFetchData()
     {
         var allItems = await _cartService.GetAllFromCart();
         if (PizzaItem != null &&

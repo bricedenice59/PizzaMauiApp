@@ -35,10 +35,24 @@ public partial class AllItemsViewModel : ViewModelBase
     private bool _hasNoResult;
     
     #endregion
-
+    
     #region Overrides
-    public override async Task ExecuteOnViewModelInit()
+
+    public override Task OnNavigatingTo(object? parameter)
     {
+        if (parameter is bool)
+            FromSearch = bool.Parse(parameter.ToString()!);
+        return base.OnNavigatingTo(parameter);
+    }
+    
+    #endregion
+    
+    #region Commands
+    [RelayCommand]
+    private async Task OnFetchData()
+    {
+        AllItems.Clear();
+        
         HasNoResult = false;
         IsLoading = true;
         
@@ -52,17 +66,8 @@ public partial class AllItemsViewModel : ViewModelBase
 
         IsLoading = false;
     }
+    
 
-    public override Task OnNavigatingTo(object? parameter)
-    {
-        if (parameter is bool)
-            FromSearch = bool.Parse(parameter.ToString()!);
-        return base.OnNavigatingTo(parameter);
-    }
-    
-    #endregion
-    
-    #region Commands
     [RelayCommand]
     private async Task SearchItems(string keyword)
     {
@@ -87,6 +92,11 @@ public partial class AllItemsViewModel : ViewModelBase
     [RelayCommand]
     private async Task OnViewMore(Pizza pizzaItem)
     {
+        // WeakReferenceMessenger.Default.Send(new ShellRouteMessage(new ShellRoute
+        // {
+        //     RouteName = nameof(DetailPage),
+        //     Parameter = pizzaItem
+        // }));
         await _navigationService.NavigateToPage<DetailPage>(pizzaItem);
     }
     #endregion

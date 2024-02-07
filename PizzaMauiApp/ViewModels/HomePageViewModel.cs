@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+using PizzaMauiApp.Messages;
 using PizzaMauiApp.Models;
 using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
@@ -71,30 +73,19 @@ public partial class HomePageViewModel : ViewModelBase
     }
     
     [RelayCommand]
-    private async Task OnFetchDataWhenNoResult()
+    private async Task OnFetchData()
     {
+        PopularPizzas.Clear();
         LoadingError = false;
-        
-        await FetchDataAndPopulate();
-        
-        LoadingError = !PopularPizzas.Any();
-    }
-    
-    #endregion
-
-    #region Overrides
-
-    public override async Task ExecuteOnViewModelInit()
-    {
         IsLoading = true;
         
         await FetchDataAndPopulate();
         
         IsLoading = false;
-
+        
         LoadingError = !PopularPizzas.Any();
     }
-
+    
     #endregion
 
     private async Task FetchDataAndPopulate()

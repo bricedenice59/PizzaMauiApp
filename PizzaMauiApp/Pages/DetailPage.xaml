@@ -7,11 +7,17 @@
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
              x:DataType="vms:DetailPageViewModel"
              x:Class="PizzaMauiApp.Pages.DetailPage"
+             Shell.TabBarIsVisible="True"
              Shell.NavBarIsVisible="False">
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="White" 
                                    StatusBarStyle="DarkContent"/>
+        
+        <toolkit:EventToCommandBehavior
+            EventName="Loaded"
+            Command="{Binding FetchDataCommand}" />
     </ContentPage.Behaviors>
+
     <ContentPage.Content>
         <Grid>
             <ScrollView Padding="15">
@@ -70,7 +76,7 @@
                     BackgroundColor="{StaticResource NavBarColor}"
                     StrokeShape="{OnPlatform Android='RoundRectangle 30,30,0,0', Default='Rectangle 0'}"
                     VerticalOptions="End"
-                    HeightRequest="150"
+                    HeightRequest="75"
                     Padding="15">
                 <Border.Shadow>
                     <Shadow Brush="Gold"
@@ -106,16 +112,6 @@
                                      Command="{Binding DecrementQuantityCommand}"/>
                         
                     </Grid>
-                    <Button Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            BackgroundColor="Goldenrod"
-                            Text="View Cart"
-                            HorizontalOptions="Center"
-                            VerticalOptions="End"
-                            CornerRadius="20"
-                            Padding="80,10"
-                            Margin="0,20,0,0"
-                            Command="{Binding ViewCartCommand}"/>
                 </Grid>
             </Border>
             <ImageButton VerticalOptions="Start"
