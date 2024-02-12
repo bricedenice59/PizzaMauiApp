@@ -10,7 +10,6 @@ public partial class CartViewModel : ViewModelBase
 {
     #region Fields
     private readonly IPizzaService _pizzaService;
-    private readonly INavigationService _navigationService;
     private readonly IToastService _toastService;
     private readonly ICartService _cartService;
     private readonly IDialogService _dialogService;
@@ -19,14 +18,12 @@ public partial class CartViewModel : ViewModelBase
     #region Ctor
 
     public CartViewModel(
-        INavigationService navigationService,
         IPizzaService pizzaService,
         IDialogService dialogService, 
         IToastService toastService,
         ICartService cartService)
     {
         _pizzaService = pizzaService;
-        _navigationService = navigationService;
         _dialogService = dialogService;
         _toastService = toastService;
         _cartService = cartService;
@@ -47,10 +44,16 @@ public partial class CartViewModel : ViewModelBase
     {
         Items.Clear();
         
-        var cartItems = await _cartService.GetAllFromCart();
+        var cartItems = await _cartService
+            .GetAllFromCart()
+            .ConfigureAwait(false);
+        
         foreach (var itemInCart in cartItems)
         {
-            var pizzaItem = await _pizzaService.GetById(itemInCart.Key);
+            var pizzaItem = await _pizzaService
+                .GetById(itemInCart.Key)
+                .ConfigureAwait(false);
+             
             if(pizzaItem == null)
                 continue;
             
@@ -76,7 +79,9 @@ public partial class CartViewModel : ViewModelBase
         var items = Items.Where(i => i.Id == pizzaItemId).ToList();
         foreach (var item in items)
         {
-            if(await _cartService.RemoveAllFromCart(item.Id))
+            if(await _cartService
+                   .RemoveAllFromCart(item.Id)
+                   .ConfigureAwait(false))
                 Items.Remove(item);
         }
 
@@ -91,7 +96,9 @@ public partial class CartViewModel : ViewModelBase
     {
         if (await _dialogService.DisplayConfirm("Confirm clear cart?", "Do you really want to clear the cart items?","Yes", "No"))
         {
-            if (await _cartService.ClearCart())
+            if (await _cartService
+                    .ClearCart()
+                    .ConfigureAwait(false))
             {
                 Items.Clear();
 

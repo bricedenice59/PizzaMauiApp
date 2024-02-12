@@ -79,7 +79,7 @@ public partial class HomePageViewModel : ViewModelBase
         LoadingError = false;
         IsLoading = true;
         
-        await FetchDataAndPopulate();
+        await FetchDataAndPopulate().ConfigureAwait(true);
         
         IsLoading = false;
         
@@ -95,7 +95,9 @@ public partial class HomePageViewModel : ViewModelBase
         
         foreach (var popularPizza in populars)
         {
+            Console.WriteLine(popularPizza.Name);
             PopularPizzas.Add(popularPizza);
         }
+        Console.WriteLine();
     }
 }

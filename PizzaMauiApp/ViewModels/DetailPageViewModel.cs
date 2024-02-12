@@ -46,7 +46,7 @@ public partial class DetailPageViewModel : ViewModelBase
     #region Overrides
     public override async Task OnNavigatingFrom(object? parameter)
     {
-        await OnFetchData();
+        await OnFetchData().ConfigureAwait(false);
         await base.OnNavigatingFrom(parameter);
     }
 
@@ -59,7 +59,7 @@ public partial class DetailPageViewModel : ViewModelBase
 
     public override async Task ExecuteOnViewModelInit()
     {
-        await OnFetchData();
+        await OnFetchData().ConfigureAwait(false);
         await base.ExecuteOnViewModelInit();
     }
     #endregion
@@ -81,7 +81,9 @@ public partial class DetailPageViewModel : ViewModelBase
         if (PizzaItem == null)
             return;
         
-        if(await _cartService.AddOneToCart(PizzaItem.Id))
+        if(await _cartService
+               .AddOneToCart(PizzaItem.Id)
+               .ConfigureAwait(false))
             Quantity++;
         else await _toastService.DisplayToast("Technical error, could not add pizza to the cart.");
     }
@@ -93,7 +95,9 @@ public partial class DetailPageViewModel : ViewModelBase
             return;
         if (Quantity >= 1)
         {
-            if(await _cartService.RemoveOneFromCart(PizzaItem.Id))
+            if(await _cartService
+                   .RemoveOneFromCart(PizzaItem.Id)
+                   .ConfigureAwait(false))
                 Quantity--;
             else await _toastService.DisplayToast("Technical error, could not remove pizza from the cart.");
         }
@@ -103,6 +107,7 @@ public partial class DetailPageViewModel : ViewModelBase
     private async Task OnFetchData()
     {
         var allItems = await _cartService.GetAllFromCart();
+        
         if (PizzaItem != null &&
             allItems.TryGetValue(PizzaItem.Id, out int quantity))
             Quantity = quantity;
