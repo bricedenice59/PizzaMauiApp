@@ -1,5 +1,5 @@
+using System.Collections.Concurrent;
 using PizzaMauiApp.API.Dtos;
-using PizzaMauiApp.Helpers.API;
 using PizzaMauiApp.Models;
 namespace PizzaMauiApp.Services;
 
@@ -20,23 +20,23 @@ public class PizzaService : IPizzaService
         _appSettings = appSettings;
     }
 
-    public Task<Pizza?> GetById(Guid id)
+    public async Task<Pizza?> GetById(Guid id)
     {
         if (id.Equals(Guid.Empty))
-            return Task.FromResult<Pizza?>(null);
-        return Task.Run(async () =>
+            return null;
+        return await Task.Run(async () =>
         {
             var allPizzas = await GetAll();
             return allPizzas?.FirstOrDefault(x => x.Id == id);
         });
     }
 
-    public async Task<IEnumerable<Pizza>?> GetAll(CancellationToken cancellationToken = new ())
+    public async ValueTask<IEnumerable<Pizza>?> GetAll(CancellationToken cancellationToken = new ())
     {
-        if (Cache.Any(x => x.Item1 == AllPizzas))
+        if (Cache.Any(x => x.Key == AllPizzas))
         {
             _logger.Information($"GetAll from cache.");
-            return await Task.FromResult(Cache.First(x => x.Item1 == AllPizzas).Item2);
+            return Cache[AllPizzas];
         }
  
         string endPoint = _appSettings.Settings.WebAPI.EndpointUrl + _appSettings.Settings.WebAPI.GetAllEndpointName;
@@ -56,8 +56,8 @@ public class PizzaService : IPizzaService
             MainImageUrl = pizzaProduct.MainImageUrl,
             PriceWithExcludedVAT = pizzaProduct.PriceWithExcludedVAT
         }));
-        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>?>(AllPizzas, lstPizza));
-        return lstPizza;
+        
+        return Cache.TryAdd(AllPizzas, lstPizza) ? Cache[AllPizzas] : lstPizza;
     }
 
     public async Task<IEnumerable<Pizza>?> Lookup(string key)
@@ -72,29 +72,29 @@ public class PizzaService : IPizzaService
         return null;
     }
 
-    public async Task<IEnumerable<Pizza>?> GetPopular(int count = 6)
+    public async ValueTask<IEnumerable<Pizza>?> GetPopular(int count = 6)
     {
-        if (Cache.Any(x => x.Item1 == PopularPizzas))
-            return Cache.First(x => x.Item1 == PopularPizzas).Item2;
+        if (Cache.Any(x => x.Key == PopularPizzas))
+            return Cache[PopularPizzas];
         
         var allPizzas = await GetAll();
         if (allPizzas == null)
             return allPizzas;
         
         var popular = allPizzas.OrderBy(x => Guid.NewGuid())
-            .Take(count);
-        Cache.Add(new ValueTuple<string, IEnumerable<Pizza>?>(PopularPizzas, popular));
-
-        return popular;
+            .Take(count)
+            .ToList();
+        
+        return Cache.TryAdd(PopularPizzas, popular) ? Cache[PopularPizzas] : popular;
     }
 
-    public List<(string, IEnumerable<Pizza>?)> Cache { get; } = new();
+    public ConcurrentDictionary<string, IEnumerable<Pizza>?> Cache { get; } = new();
 }
 
 public interface IPizzaService
 {
     Task<Pizza?> GetById(Guid id);
-    Task<IEnumerable<Pizza>?> GetAll(CancellationToken cancellationToken = new());
+    ValueTask<IEnumerable<Pizza>?> GetAll(CancellationToken cancellationToken = new());
     Task<IEnumerable<Pizza>?> Lookup(string key);
-    Task<IEnumerable<Pizza>?> GetPopular(int count = 6);
+    ValueTask<IEnumerable<Pizza>?> GetPopular(int count = 6);
 }
