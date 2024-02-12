@@ -82,7 +82,7 @@ public partial class DetailPageViewModel : ViewModelBase
             return;
         
         if(await _cartService
-               .AddOneToCart(PizzaItem.Id)
+               .AddOneToCart(PizzaItem.Id, CancellationToken.None)
                .ConfigureAwait(false))
             Quantity++;
         else await _toastService.DisplayToast("Technical error, could not add pizza to the cart.");
@@ -96,7 +96,7 @@ public partial class DetailPageViewModel : ViewModelBase
         if (Quantity >= 1)
         {
             if(await _cartService
-                   .RemoveOneFromCart(PizzaItem.Id)
+                   .RemoveOneFromCart(PizzaItem.Id, CancellationToken.None)
                    .ConfigureAwait(false))
                 Quantity--;
             else await _toastService.DisplayToast("Technical error, could not remove pizza from the cart.");
@@ -106,7 +106,7 @@ public partial class DetailPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task OnFetchData()
     {
-        var allItems = await _cartService.GetAllFromCart();
+        var allItems = await _cartService.GetAllFromCart(CancellationToken.None);
         
         if (PizzaItem != null &&
             allItems.TryGetValue(PizzaItem.Id, out int quantity))

@@ -45,7 +45,7 @@ public partial class CartViewModel : ViewModelBase
         Items.Clear();
         
         var cartItems = await _cartService
-            .GetAllFromCart()
+            .GetAllFromCart(CancellationToken.None)
             .ConfigureAwait(false);
         
         foreach (var itemInCart in cartItems)
@@ -80,7 +80,7 @@ public partial class CartViewModel : ViewModelBase
         foreach (var item in items)
         {
             if(await _cartService
-                   .RemoveAllFromCart(item.Id)
+                   .RemoveAllFromCart(item.Id, CancellationToken.None)
                    .ConfigureAwait(false))
                 Items.Remove(item);
         }
@@ -97,7 +97,7 @@ public partial class CartViewModel : ViewModelBase
         if (await _dialogService.DisplayConfirm("Confirm clear cart?", "Do you really want to clear the cart items?","Yes", "No"))
         {
             if (await _cartService
-                    .ClearCart()
+                    .ClearCart(CancellationToken.None)
                     .ConfigureAwait(false))
             {
                 Items.Clear();

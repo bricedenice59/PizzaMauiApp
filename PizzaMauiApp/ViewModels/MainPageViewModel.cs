@@ -65,7 +65,7 @@ public partial class MainPageViewModel : ViewModelBase
         if (IsLoginVisible)
         {
             loginOrSignupResult = await _accountService
-                .LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!)
+                .LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!, CancellationToken.None)
                 .ConfigureAwait(true);
             
             if (!loginOrSignupResult.Item1)
@@ -79,7 +79,7 @@ public partial class MainPageViewModel : ViewModelBase
         else
         { 
             loginOrSignupResult = await _accountService
-                .RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!)
+                .RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!, CancellationToken.None)
                 .ConfigureAwait(true);
             
             if (!loginOrSignupResult.Item1)
