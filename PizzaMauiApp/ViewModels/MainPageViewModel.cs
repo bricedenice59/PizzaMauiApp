@@ -1,10 +1,8 @@
 using CommunityToolkit.Mvvm.Messaging;
 using PizzaMauiApp.API.Dtos;
 using PizzaMauiApp.Helpers.Crypto;
-using PizzaMauiApp.Helpers.ValidationRules;
 using PizzaMauiApp.Messages;
 using PizzaMauiApp.Models;
-using PizzaMauiApp.Pages;
 using PizzaMauiApp.Services;
 using PizzaMauiApp.ViewModels.Models;
 
@@ -13,7 +11,6 @@ namespace PizzaMauiApp.ViewModels;
 public partial class MainPageViewModel : ViewModelBase
 {
     #region Fields
-    private readonly INavigationService _navigationService;
     private readonly IAccountService _accountService;
     #endregion
     
@@ -40,10 +37,8 @@ public partial class MainPageViewModel : ViewModelBase
     #region Ctor
 
     public MainPageViewModel(
-        INavigationService navigationService,
         IAccountService accountService)
     {
-        _navigationService = navigationService;
         _accountService = accountService;
         UserModel = new UserModel();
         UserModel.Init(IsLoginVisible);
@@ -69,7 +64,10 @@ public partial class MainPageViewModel : ViewModelBase
         //login case
         if (IsLoginVisible)
         {
-            loginOrSignupResult = await _accountService.LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
+            loginOrSignupResult = await _accountService
+                .LoginUserAsync(UserModel.Email.Value!, UserModel.Password.Value!, CancellationToken.None)
+                .ConfigureAwait(true);
+            
             if (!loginOrSignupResult.Item1)
             {
                 LoginOrSignupFailed = true;
@@ -80,7 +78,10 @@ public partial class MainPageViewModel : ViewModelBase
         //signup case
         else
         { 
-            loginOrSignupResult = await _accountService.RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!);
+            loginOrSignupResult = await _accountService
+                .RegisterUserAsync(UserModel.Email.Value!, UserModel.Password.Value!, CancellationToken.None)
+                .ConfigureAwait(true);
+            
             if (!loginOrSignupResult.Item1)
             {
                 LoginOrSignupFailed = true;

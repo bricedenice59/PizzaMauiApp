@@ -56,12 +56,16 @@ public partial class AllItemsViewModel : ViewModelBase
         HasNoResult = false;
         IsLoading = true;
         
-        var allPizzas = await _pizzaService.GetAll();
-        if (allPizzas == null)
-            return;
-        foreach (var pizzaItem in allPizzas)
+        var allPizzas = await _pizzaService
+            .GetAll(CancellationToken.None)
+            .ConfigureAwait(false);
+
+        if (allPizzas != null)
         {
-            AllItems.Add(pizzaItem);
+            foreach (var pizzaItem in allPizzas)
+            {
+                AllItems.Add(pizzaItem);
+            }
         }
 
         IsLoading = false;
@@ -92,11 +96,6 @@ public partial class AllItemsViewModel : ViewModelBase
     [RelayCommand]
     private async Task OnViewMore(Pizza pizzaItem)
     {
-        // WeakReferenceMessenger.Default.Send(new ShellRouteMessage(new ShellRoute
-        // {
-        //     RouteName = nameof(DetailPage),
-        //     Parameter = pizzaItem
-        // }));
         await _navigationService.NavigateToPage<DetailPage>(pizzaItem);
     }
     #endregion
