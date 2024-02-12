@@ -12,7 +12,7 @@ public partial class App : Application
         InitializeComponent();
         
         MainPage = new AppShell(navigationService);
-        WeakReferenceMessenger.Default.Send(new HasAuthenticatedMessage(true));
+        WeakReferenceMessenger.Default.Send(new HasAuthenticatedMessage(IsAuthenticated));
     }
 
     private static bool IsAuthenticated => Preferences.Get(PreferencesStorageModel.UserHasAuthenticated, false);
