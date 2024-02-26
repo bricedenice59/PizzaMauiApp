@@ -3,47 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PizzaMauiApp.ViewModels"
              xmlns:controls="clr-namespace:PizzaMauiApp.Controls"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PizzaMauiApp.Pages.MainPage"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
              BackgroundColor="{StaticResource NavBarColor}"
              x:DataType="vm:MainPageViewModel">
        
-       <Grid>
-              <StackLayout Orientation="Vertical"
-                    Spacing="10">
-                     <Label 
-                         FontAttributes="Bold" 
-                         FontSize="40"
-                         VerticalTextAlignment="Center" 
-                         HorizontalOptions="Center"
-                         Text="Pizza World"/>
-    
-                  <Image 
-                         HeightRequest="175"
-                         WidthRequest="175"
-                         Source="pizzamenu.png"/>
-                  
-                  <Label 
-                         FontAttributes="Bold" 
-                         FontSize="30"
-                         VerticalTextAlignment="Center" 
-                         HorizontalOptions="Center"
-                         HorizontalTextAlignment="Center"
-                         LineBreakMode="WordWrap"
-                         Text="The taste of the best pizza!"/>
-                 
               <Grid>
-                     <Border
-                           StrokeThickness="1"
-                           Stroke="Black"
-                           StrokeShape="RoundRectangle 25"
-                           VerticalOptions="Fill"
-                           Margin="10,20,10,0"
-                           >
-                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, 50" 
-                               Margin="5,0,5,0" RowSpacing="5" MaximumHeightRequest="450">
+                     <Grid VerticalOptions="Start"
+                           HorizontalOptions="Fill"
+                           RowDefinitions="Auto, Auto, Auto" 
+                           RowSpacing="15">
+                            
+                            <Label Grid.Row="0"
+                                   FontAttributes="Bold" 
+                                   FontSize="40"
+                                   VerticalTextAlignment="Center" 
+                                   HorizontalOptions="Center"
+                                   Text="Pizza World"/>
+           
+                            <Image Grid.Row="1"
+                                   HeightRequest="125"
+                                   WidthRequest="125"
+                                   Source="pizzamenu.png"/>
+                         
+                            <Label Grid.Row="2"
+                                   FontAttributes="Bold" 
+                                   FontSize="30"
+                                   VerticalTextAlignment="Center" 
+                                   HorizontalTextAlignment="Center"
+                                   LineBreakMode="WordWrap"
+                                   Text="The taste of the best pizza!"/>
+                     </Grid>
+                            
+                     <Grid VerticalOptions="End"
+                           HorizontalOptions="Fill">
+                            <Border
+                             StrokeThickness="1"
+                             Stroke="Black"
+                             StrokeShape="RoundRectangle 25"
+                             Margin="10,20,10,0">
+                         <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
+                               Margin="5,0,5,0" RowSpacing="5" >
                                 <Label Grid.Row="0"
                                        FontAttributes="Bold" 
                                        FontSize="21" 
@@ -84,7 +85,7 @@
                                               IconSource="user"
                                               IconHeight="25"
                                               IconWidth="25"/>
-                                       <Label 
+                                       <Label Margin="10,5,5,0"
                                               Text="{Binding UserModel.Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                                               FontSize="15"
                                               LineBreakMode="WordWrap"/>
@@ -105,7 +106,7 @@
                                               UnfocusedCommand="{Binding ValidatePasswordCommand}"
                                               IsValid="{Binding UserModel.Password.IsValid, FallbackValue=false}">
                                        </controls:PasswordBox>
-                                       <Label
+                                       <Label Margin="10,5,5,0"
                                               Text="{Binding UserModel.Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                                               FontSize="15"
                                               LineBreakMode="WordWrap"/>
@@ -182,16 +183,14 @@
                                 </HorizontalStackLayout>
                          </Grid>
                   </Border>
-                     <Border
-                            Opacity="0.95"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Margin="10,20,10,0"
-                            StrokeThickness="1"
-                            Stroke="Black"
-                            StrokeShape="RoundRectangle 25"
-                            BackgroundColor="Goldenrod"
-                            IsVisible="{Binding IsProcessing}">
+                            <Border
+                             Opacity="0.95"
+                             Margin="10,20,10,0"
+                             StrokeThickness="1"
+                             Stroke="Black"
+                             StrokeShape="RoundRectangle 25"
+                             BackgroundColor="Goldenrod"
+                             IsVisible="{Binding IsProcessing}">
                          <Grid>
                                 <VerticalStackLayout Spacing="20">
                                        <ActivityIndicator
@@ -245,8 +244,8 @@
                          
                          
                      </Border>    
+                     </Grid>     
               </Grid>
 
-       </StackLayout>
-       </Grid>
+
 </ContentPage>
