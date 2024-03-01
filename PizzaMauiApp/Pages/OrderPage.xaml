@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:PizzaMauiApp.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:pizzaMauiApp="clr-namespace:PizzaMauiApp"
+             xmlns:controls="clr-namespace:GifImageLib.Controls;assembly=GifImageLib"
+             x:Class="PizzaMauiApp.Pages.OrderPage"
+             Shell.TabBarIsVisible="False"
+             x:DataType="vms:OrderPageViewModel"
+             BackgroundColor="PaleGoldenrod"
+             Title="My Order">
+       <Shell.BackButtonBehavior>
+              <BackButtonBehavior IsVisible="False"/>
+       </Shell.BackButtonBehavior>
+       <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding SetGracePeriodTimerCommand}" />
+    </ContentPage.Behaviors>
+    
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto, Auto, *"
+              RowSpacing="10" 
+              ColumnSpacing="10">
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto"
+                  HorizontalOptions="Start" Padding="10">
+                <Label Grid.Row="0" Grid.Column="0" Padding="5"
+                          Text="Order ID:"
+                          VerticalOptions="Center"
+                          HorizontalOptions="Start" 
+                          FontSize="15" />
+                <Label Grid.Row="0" Grid.Column="1"
+                       Text="{Binding OrderId, Mode=OneTime}"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End" 
+                       FontSize="15"
+                       FontAttributes="Bold"/>
+                <Label Grid.Row="1" Grid.Column="0" Padding="5"
+                       Text="Date:"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" 
+                       FontSize="15"/>
+                <Label Grid.Row="1" Grid.Column="1"
+                       Text="{Binding OrderDateTime,  Mode=OneTime}"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End" 
+                       FontSize="15"
+                       FontAttributes="Bold"/>
+                <Label Grid.Row="2" Grid.Column="0" Padding="5"
+                       Text="Order Total:"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" 
+                       FontSize="15"
+                       FontFamily="Bold"/>
+                <Label Grid.Row="2" Grid.Column="1"
+                       Text="{Binding OrderTotal, StringFormat='${0:N2}'}"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End" 
+                       FontSize="17"
+                       TextColor="Crimson"
+                       FontAttributes="Bold"/>
+            </Grid>
+               <VerticalStackLayout Grid.Row="3" Padding="15" Spacing="10"
+                                    IsVisible="{Binding IsGracePeriodOver, Converter={StaticResource Bool2VisibilityHiddenConverter}}">
+                      <Label
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"
+                             Text="Changed your mind?"
+                             FontSize="16">
+                      </Label>
+                      <Label
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"
+                             Text="You may be able to cancel the order in the next few seconds..."
+                             FontSize="16">
+                      </Label>
+
+                      <Button 
+                              CornerRadius="20"
+                              Text="{Binding TimerTick}"
+                              BackgroundColor="IndianRed"
+                              TextColor="Black"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              Command="{Binding OrderCanceledDuringGracePeriodCommand}"/>
+
+               </VerticalStackLayout>
+               
+               <VerticalStackLayout Grid.Row="3" Padding="15" Spacing="10"
+                                    IsVisible="{Binding IsGracePeriodOver}">
+                      <Label
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Text="Your order is now being sent to kitchen, waiting for confirmation..."
+                             FontSize="16">
+                      </Label>
+                      <controls:GifImage x:Name="gifImage" Asset="hourglass.gif" WidthRequest="150" HeightRequest="150"
+                                         HorizontalOptions="Center"/>
+
+               </VerticalStackLayout>
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>

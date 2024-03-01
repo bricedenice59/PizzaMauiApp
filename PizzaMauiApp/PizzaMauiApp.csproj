@@ -56,7 +56,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Maui.Controls.Core" Version="8.0.6" />
         <PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.6" />
-        <PackageReference Include="PizzaMauiApp.API.Dtos" Version="0.1.2" />
+        <PackageReference Include="PizzaMauiApp.API.Dtos" Version="0.1.4" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -144,6 +144,10 @@
     <ItemGroup>
       <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
       <AndroidResource Include="Platforms\Android\Resources\xml\network_security_config.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GifImageLib\GifImageLib.csproj" />
     </ItemGroup>
 
 </Project>

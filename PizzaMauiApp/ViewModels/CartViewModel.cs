@@ -13,6 +13,7 @@ public partial class CartViewModel : ViewModelBase
     private readonly IToastService _toastService;
     private readonly ICartService _cartService;
     private readonly IDialogService _dialogService;
+    private readonly INavigationService _navigationService;
     #endregion
     
     #region Ctor
@@ -21,13 +22,16 @@ public partial class CartViewModel : ViewModelBase
         IPizzaService pizzaService,
         IDialogService dialogService, 
         IToastService toastService,
-        ICartService cartService)
+        ICartService cartService,
+        INavigationService navigationService)
     {
         _pizzaService = pizzaService;
         _dialogService = dialogService;
         _toastService = toastService;
         _cartService = cartService;
+        _navigationService = navigationService;
     }
+    
     #endregion
     
     #region Properties
@@ -118,6 +122,12 @@ public partial class CartViewModel : ViewModelBase
         {
             RouteName = nameof(HomePage)
         }));
+    }
+    
+    [RelayCommand]
+    private async Task OnCreateOrder()
+    {
+        await _navigationService.NavigateToPage<OrderPage>(Items);
     }
 
     #endregion

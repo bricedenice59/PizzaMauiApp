@@ -122,7 +122,8 @@
                                     VerticalOptions="Center"
                                     HorizontalOptions="End"
                                     Padding="25, 10"
-                                    IsEnabled="{Binding HasItemsInCart}"/>
+                                    IsEnabled="{Binding HasItemsInCart}"
+                                    Command="{Binding CreateOrderCommand}"/>
                         </Grid>
                     </Border>
                 </Grid>

@@ -95,7 +95,6 @@ public partial class HomePageViewModel : ViewModelBase
         
         foreach (var popularPizza in populars)
         {
-            Console.WriteLine(popularPizza.Name);
             PopularPizzas.Add(popularPizza);
         }
         Console.WriteLine();

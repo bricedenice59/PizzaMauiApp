@@ -10,6 +10,7 @@ public interface IRequestApiService
     Task<T?> Delete<T>(string endpointUrl, CancellationToken cancellationToken =  new (), TimeSpan timeout = default);
     Task<T?> Get<T>(string endpointUrl, CancellationToken cancellationToken =  new (), TimeSpan timeout = default);
     Task<TOut?> Post<TIn, TOut>(string endpointUrl, TIn inObject, CancellationToken cancellationToken = new (), TimeSpan timeout = default);
+    Task<bool> Post<TIn>(string endpointUrl, TIn inObject, CancellationToken cancellationToken = new (), TimeSpan timeout = default);
 }
 
 public class RequestApiService : IRequestApiService
@@ -165,7 +166,9 @@ public class RequestApiService : IRequestApiService
                 return default;
             }
             var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            
+            if (responseStream.Length == 0) //nothing to deserialize
+                return default;
+                
             // Deserialize the JSON response
             var options = new JsonSerializerOptions
             {
@@ -179,6 +182,49 @@ public class RequestApiService : IRequestApiService
             }
 
             return responseData != null ? responseData.Data : default;
+        }
+        catch (TaskCanceledException tce)
+        {
+            _logger.Warning(tce, "The request timed out");
+            // The request timed out (error 408)
+            return default;
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, ex.Message);
+            return default;
+        }
+    }
+    
+    public async Task<bool> Post<TIn>(string endpointUrl, TIn inObject, CancellationToken cancellationToken,
+        TimeSpan timeout = default)
+    {
+        if (cancellationToken.IsCancellationRequested)
+            return default;
+
+        var tsTimeout = 
+            timeout == default 
+                ? _timeoutDuration 
+                : timeout;
+        try
+        {
+            using var client = _httpClientFactory.CreateClient("customHttpClient");
+            client.Timeout = tsTimeout;
+            client.BaseAddress = new Uri(endpointUrl);
+            
+            // Add an Accept header for JSON format.
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+        
+            // Get data response
+            var response = await client.PostAsJsonAsync(endpointUrl, inObject, cancellationToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.Warning( $"The request failed with statusCode: {(int)response.StatusCode}, reason: {response.ReasonPhrase}");
+                return default;
+            }
+
+            return true;
         }
         catch (TaskCanceledException tce)
         {

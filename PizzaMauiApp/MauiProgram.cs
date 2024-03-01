@@ -41,6 +41,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DetailPage, DetailPageViewModel>();
         builder.Services.AddTransient<CartViewPage, CartViewModel>();
         builder.Services.AddTransient<SettingsPage, SettingsPageViewModel>();
+        builder.Services.AddTransient<OrderPage, OrderPageViewModel>();
         
         builder.Services.AddSingleton<IDIService, DIService>();
         builder.Services.AddSingleton<INavigationService, NavigationService>();
@@ -52,7 +53,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IRequestApiService, RequestApiService>();
         builder.Services.AddSingleton<IAppSettings, AppSettings>();
         builder.Services.AddSingleton<ITokenService, TokenService>();
-        builder.Services.AddSingleton(typeof(TokenAuthHeaderHandler));
+        builder.Services.AddSingleton<IOrderService, OrderService>();
+        builder.Services.AddTransient(typeof(TokenAuthHeaderHandler));
         
         builder.Services.AddLogging(
             configure =>

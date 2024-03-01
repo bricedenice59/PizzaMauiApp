@@ -26,7 +26,16 @@ public class NavigationService(IDIService services) : INavigationService
 
     public async Task NavigateToPage<T>(object? parameter = null, bool isAnimated = true) where T : Page
     {
-        var toPage = services.ResolveView<T>();
+        T? toPage;
+        try
+        {
+            toPage = services.ResolveView<T>();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
 
         if (toPage is not null && toPage.BindingContext is not null)
         {
